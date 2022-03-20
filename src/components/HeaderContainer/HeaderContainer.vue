@@ -8,12 +8,14 @@
       :show-all-levels="false"
       :clearable="true"
       :props="prop"
-      filterable
+      :options="province_list"
       @change="searchBtn"
+
     />
   </div>
   Header
-
+  <!-- :filter-method="filterMethod" -->
+  <!-- filterable -->
   <!-- </el-header> -->
 </template>
 
@@ -27,7 +29,7 @@ const searchArea = ref('110000')
 const prop = reactive({
   // expandTrigger: 'hover',
   loading: false,
-  // checkStrictly: true, // 取消父子节点关联
+  checkStrictly: true, // 取消父子节点关联
   emitPath: false,
   lazy: true,
   lazyLoad(node, resolve) {
@@ -57,6 +59,7 @@ const searchBtn = async (value) => {
   let points = await getCoordsPoint(1, value)
   await ponit(points)
 }
+
 
 onMounted(() => {
   // dataPro()

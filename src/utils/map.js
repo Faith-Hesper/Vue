@@ -37,20 +37,21 @@ async function mapInite() {
     //   return popup
     // }
     // control.addTo(map)
+    resolve(map)
   })
 }
 
 // 添加避难所标记点
 async function ponit(points) {
-  // 清除前面标记的点
+  // 清除前面标记的点、图层
   if (map.hasLayer(markerPoints)) {
     markerPoints.clearLayers()
     control.removeLayer(markerPoints)
   }
   return await new Promise((resolve, reject) => {
     let markers = []
-    // 聚焦到标记点
-    map.flyTo(points[0].location, 10)
+    // 聚焦到标记点 放大13
+    map.flyTo(points[0].location, 13)
     points.forEach((item) => {
       let marker = L.marker(item.location, { icon: myIcon }).bindPopup(
         `<p>城市: ${item.cityname}</p><p>地区: ${item.adname}</p><p>类型: ${item.name}</p>`
