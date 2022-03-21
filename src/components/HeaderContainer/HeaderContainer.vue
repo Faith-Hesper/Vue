@@ -1,7 +1,7 @@
 <template>
   <!-- <el-header> -->
   <div class="search">
-    <span class="example-demonstration">搜索</span>
+    <span class="example-demonstration">搜索: </span>
     <el-cascader
       v-model="searchArea"
       placeholder="搜索"
@@ -10,20 +10,21 @@
       :props="prop"
       :options="province_list"
       @change="searchBtn"
+      filterable    
 
     />
   </div>
-  Header
+  <div class="header">Header</div>
   <!-- :filter-method="filterMethod" -->
-  <!-- filterable -->
   <!-- </el-header> -->
 </template>
 
 <script setup>
 import { onMounted, ref, reactive, shallowReactive } from 'vue'
 import { province_list, city_list, county_list } from '../../utils/areaListPrimary'
-import { ponit } from '../../utils/map'
+import { ponit,earthPoint } from '../../utils/map'
 import getCoordsPoint from '../../utils/getCoordsPoint'
+import { earthquake } from '../../api/base'
 
 const searchArea = ref('110000')
 const prop = reactive({
@@ -39,13 +40,20 @@ const prop = reactive({
     } else if (level == 1) {
       let citys = city_list.filter((item) => {
         // 市前两位与省前两位相同
-        return item.value.slice(0, 2) == value.slice(0, 2)
+        if(item.value.slice(0, 2) == value.slice(0, 2))
+        {
+          province_list.children = item
+          return true
+        }
       })
       resolve(citys)
     } else if (level == 2) {
       let countys = county_list.filter((item) => {
         // 县前两位与市前两位相同
-        return item.value.slice(0, 2) == value.slice(0, 2)
+        if(item.value.slice(0, 2) == value.slice(0, 2) && item.value.slice(3, 4) == value.slice(3, 4)){
+          city_list.children = item
+          return true
+        }
       })
       countys.forEach((item) => {
         item.leaf = true
@@ -61,32 +69,30 @@ const searchBtn = async (value) => {
 }
 
 
-onMounted(() => {
+onMounted(async () => {
   // dataPro()
+  const { data:{ result } } = await earthquake()
+  await earthPoint(result)
+  // console.log(result)
 })
 </script>
 
 <script>
 export default {
-  name: 'Header',
+  name: 'Header'
 }
 </script>
 
 <style scoped>
 .search {
-  position: absolute;
-  text-align: left;
-  padding-left: 10px;
-  left: 0%;
+  /* position: absolute; */
+  /* order: -5; */
+  /* text-align: left; */
+  padding-left: 5%;
+  left: 20%;
 }
-.el-header {
-  height: 50px;
-  position: relative;
-  padding: 0;
-  background-color: #b3c0d1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+.header{
+  left: 50%;
+  position: absolute;
 }
 </style>

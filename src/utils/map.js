@@ -1,5 +1,7 @@
 import L from 'leaflet'
 import { tiledMapLayer } from '@supermap/iclient-leaflet'
+import './L.Icon.Pulse'
+import { marker } from 'leaflet'
 let map = {}
 let markerPoints = {}
 let control,
@@ -18,6 +20,7 @@ async function mapInite() {
     map = L.map('map', {
       // crs: L.CRS.EPSG4326,
       center: [39, 118],
+      minZoom: 2,
       maxZoom: 18,
       zoom: 8,
       layers: baseMapLayer,
@@ -72,5 +75,29 @@ async function ponit(points) {
   })
 }
 
-export { map, myIcon, ponit }
+async function earthPoint(result) {
+  new Promise((resolve, reject) => {
+    // 导入的L.icon.pulse
+    const pulseIcon = L.icon.pulse({
+      iconSize: [12, 12],
+      color: '#F60',
+      fillColor: '#FAA90E' // 填充色
+    })
+    let markers = []
+    result.map(item => {
+      markers.push(L.marker([item.EPI_LAT, item.EPI_LON], {
+        icon: pulseIcon
+      }).bindPopup(
+        `<p>城市: ${item.LOCATION_C}</p><p>震级: ${item.M}</p><p>深度: ${item.EPI_DEPTH} 千米</p><p>发震时刻: ${item.O_TIME}</p>`
+      ))
+    })
+    L.featureGroup(markers)
+    .on('mousemove', e => e.layer.openPopup())
+    .on('click', e => e.layer.openPopup())
+    .on('mouseout', e => e.layer.closePopup())
+    .addTo(map)
+  })
+  }
+
+export { map, myIcon, ponit,earthPoint }
 export default mapInite

@@ -43,6 +43,13 @@ export default defineConfig({
         secure: true,
         rewrite: (path) => path.replace(/^\/gaode/, ''),
       },
+      '/api': {
+        target: 'http://localhost:3001/',
+        ws: true,
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
     },
   },
   build: {

@@ -1,5 +1,5 @@
 <template>
-  <el-container class="layout-container" style="height: 700px">
+  <el-container class="layout-container" style="height: 44.375rem">
     <el-header>
     <HeaderContainer></HeaderContainer>
     </el-header>
@@ -39,7 +39,7 @@ export default {
   padding: 0;
   background-color: #b3c0d1;
   display: flex;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
   text-align: center;
 }
