@@ -1,4 +1,4 @@
-import { gaode } from '../api/base'
+import { gaode } from '@/api/base'
 
 async function getCoordinate(page,city="唐山市") {
   let pointData = []

@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-// import path from 'path'
+import path from 'path'
 // Element Plus自动按需引入配置，先执行 npm install -D unplugin-vue-components unplugin-auto-import
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
@@ -30,9 +30,9 @@ export default defineConfig({
   },
   resolve: {
     extensions: ['.js', '.vue', '.json', ".scss"],
-    // alias: {
-    //   '@': path.resolve(__dirname, 'src')
-    // }
+    alias: {
+      '@': path.resolve(__dirname, 'src')
+    }
   },
   server: {
     proxy: {
@@ -44,7 +44,7 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/gaode/, ''),
       },
       '/api': {
-        target: 'http://localhost:3001/',
+        target: 'http://localhost:3021/',
         ws: true,
         changeOrigin: true,
         secure: true,

@@ -21,10 +21,10 @@
 
 <script setup>
 import { onMounted, ref, reactive, shallowReactive } from 'vue'
-import { province_list, city_list, county_list } from '../../utils/areaListPrimary'
-import { ponit,earthPoint } from '../../utils/map'
-import getCoordsPoint from '../../utils/getCoordsPoint'
-import { earthquake } from '../../api/base'
+import { province_list, city_list, county_list } from '@/utils/areaListPrimary'
+import { ponit,earthPoint,Chart } from '@/utils/map'
+import getCoordsPoint from '@/utils/getCoordsPoint'
+import { earthquake } from '@/api/base'
 
 const searchArea = ref('110000')
 const prop = reactive({
@@ -68,13 +68,49 @@ const searchBtn = async (value) => {
   await ponit(points)
 }
 
+const formDate = (time)=>{
+  if(time<=9){
+    return '0' + time
+  }
+  return time.toString()
+}
 
 onMounted(async () => {
   // dataPro()
   const { data:{ result } } = await earthquake()
-  await earthPoint(result)
+  let reverseDate = result.reverse()
+  await earthPoint(reverseDate)
+  let sevenAgoTime = []
+  let nowTime = new Date()
+  for(let i=0;i<7;i++){
+    let timestamp =new Date()
+    timestamp.setDate(nowTime.getDate()-i)
+    let formtime = formDate(timestamp.getMonth()+1) + formDate(timestamp.getDate())
+    sevenAgoTime.push(formtime)
+    // console.log(sevenAgoTime)
+  }
+  let echarts = {
+    time: [],
+    count: []
+  }
+  sevenAgoTime.map(item=>{
+    let time = item
+    let earthquakeCount = 0
+    reverseDate.map((item,index)=>{
+      let earthquakeTime = item.CATA_ID.slice(6,10)
+      if(time == earthquakeTime)
+      {
+        earthquakeCount++
+      }
+    })
+    echarts.time.push(item)
+    echarts.count.push(earthquakeCount)
+  })
+  Chart(echarts)
+  console.log(echarts);
   // console.log(result)
 })
+
 </script>
 
 <script>

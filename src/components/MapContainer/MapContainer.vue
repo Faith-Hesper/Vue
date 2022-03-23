@@ -9,7 +9,7 @@
 import { onMounted, ref } from 'vue'
 // import L from 'leaflet'
 // import { tiledMapLayer } from '@supermap/iclient-leaflet'
-import mapInite from '../../utils/map'
+import mapInite from '@/utils/map'
 // import getCoordsPoint from '../../utils/getCoordsPoint'
 
 export default {

@@ -1,5 +1,5 @@
 <template>
-  <el-container class="layout-container" style="height: 44.375rem">
+  <el-container class="layout-container" style="height: 44.4375rem">
     <el-header>
     <HeaderContainer></HeaderContainer>
     </el-header>
@@ -15,9 +15,9 @@
 </template>
 
 <script>
-import HeaderContainer from '../components/HeaderContainer/HeaderContainer.vue'
-import AsideContainer from '../components/AsideContainer/AsideContainer.vue'
-import MapContainer from '../components/MapContainer/MapContainer.vue'
+import HeaderContainer from '@/components/HeaderContainer/HeaderContainer.vue'
+import AsideContainer from '@/components/AsideContainer/AsideContainer.vue'
+import MapContainer from '@/components/MapContainer/MapContainer.vue'
 export default {
   name: 'Home',
   props: {
