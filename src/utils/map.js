@@ -71,7 +71,7 @@ async function ponit(points) {
       )
       .addTo(map)
     // 添加图层
-    control.addOverlay(markerPoints, 'marker')
+    control.addOverlay(markerPoints, '避难所')
 
     resolve(markers)
   })

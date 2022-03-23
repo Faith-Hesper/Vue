@@ -69,6 +69,7 @@ export default defineConfig({
           // "@supermap/iclient-leaflet": ["@supermap/iclient-leaflet"],
           // 试了一下传字符串也是可以的
           leaflet: ["leaflet"],
+          echarts: ["echarts"],
           // "element-plus": ["element-plus"],
           "@element-plus/icons-vue": ["@element-plus/icons-vue"],
           axios: ["axios"],
