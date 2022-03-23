@@ -15,20 +15,43 @@
 </template>
 
 <script>
+import { onMounted,provide,shallowRef } from 'vue'
 import HeaderContainer from '@/components/HeaderContainer/HeaderContainer.vue'
 import AsideContainer from '@/components/AsideContainer/AsideContainer.vue'
 import MapContainer from '@/components/MapContainer/MapContainer.vue'
+import { earthPoint,recentData } from '@/utils/map'
+import { earthquake } from '@/api/base'
+
 export default {
   name: 'Home',
-  props: {
-    msg: String,
-  },
   components: {
     HeaderContainer,
     AsideContainer,
     MapContainer
   },
-  setup(props) {}
+  setup(props) {
+
+    // let earthquakeData = shallowReactive({
+    //   earthquakePoint: [],
+    //   recentData: {}
+    // })
+    let earthquakePoint = shallowRef([])
+    let recentquakeData = shallowRef({})
+    // provide('earthquakeData',earthquakeData)
+    provide('earthquakePoint',earthquakePoint)
+    provide('recentquakeData',recentquakeData)
+    onMounted(async ()=>{
+      // 请求地震点数据
+      const { data:{ result } } = await earthquake()
+      let reverseDate = result.reverse()
+      earthquakePoint.value = await earthPoint(reverseDate)
+      recentquakeData.value =await recentData(reverseDate)
+    })
+    return {
+      earthquakePoint,
+      recentquakeData
+    }
+  }
 }
 </script>
 

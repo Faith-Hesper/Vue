@@ -16,7 +16,6 @@ export default {
   name: 'Map',
   setup() {
     const fill = ref(true)
-    let loaction = []
 
     const getGeoData = () => {
       let k = 0

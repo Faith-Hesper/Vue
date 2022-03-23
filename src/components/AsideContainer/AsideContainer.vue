@@ -22,7 +22,7 @@
           <span>Navigator One</span>
         </template>
         <el-menu-item-group title="Group One">
-          <el-menu-item index="1-1">item one</el-menu-item>
+          <el-menu-item index="1-1" @click="recent">7天内数据</el-menu-item>
           <el-menu-item index="1-2">item one</el-menu-item>
         </el-menu-item-group>
         <el-menu-item-group title="Group Two">
@@ -52,7 +52,8 @@
 </template>
 
 <script setup>
-  import { onMounted, ref } from "vue";
+  import { onMounted, ref,inject } from "vue"
+  import { recentPonit } from  "@/utils/map"
 
   // 组件名必须加引号
   let currentIconComponent = ref("expand");
@@ -62,10 +63,10 @@
   let isCollapse = ref(true);
   const handleOpen = (key, keyPath) => {
     // console.log(key, keyPath)
-  };
+  }
   const handleClose = (key, keyPath) => {
     // console.log(key, keyPath)
-  };
+  }
   function btn_expand() {
     if (times == 0) {
       isCollapse.value = false;
@@ -79,6 +80,11 @@
       expand_text.value = "";
       times = 0;
     }
+  }
+  const recentquakeData = inject('recentquakeData')
+  console.log(recentquakeData);
+  const recent = async ()=>{
+    await recentPonit(recentquakeData)
   }
 </script>
 <script>
