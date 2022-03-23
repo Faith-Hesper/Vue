@@ -1,5 +1,6 @@
 import L from 'leaflet'
-import { tiledMapLayer } from '@supermap/iclient-leaflet'
+import { tiandituTileLayer } from '@supermap/iclient-leaflet'
+// { tiandituTileLayer,tiledMapLayer }
 import '@/utils/L.Icon.Pulse'
 import { recentDate } from '@/utils/date'
 import echarts from 'echarts'
@@ -10,7 +11,8 @@ let map = {},
   control,
   echartControls,
   baseMap = {}
-const url = 'https://iserver.supermap.io/iserver/services/map-china400/rest/maps/China'
+  
+  const url = 'http://t0.tianditu.gov.cn/vec_c/wmts?'
 
 const myIcon = L.icon({
   iconUrl: 'https://iclient.supermap.io/web/libs/leaflet/1.7.1/images/marker-icon-2x.png',
@@ -20,18 +22,29 @@ const myIcon = L.icon({
 // 初始化地图
 async function mapInite() {
   return await new Promise((resolve, reject) => {
-    let baseMapLayer = tiledMapLayer(url)
+    let baseMapLayer = tiandituTileLayer({
+      url: url,
+      // isLabel: true,
+      key: '70c2475638a45e3fea8696df2f9917f8'
+    })
+
+    let MapLabel = tiandituTileLayer({
+      isLabel: true,
+      key: '70c2475638a45e3fea8696df2f9917f8'
+    })
+
     map = L.map('map', {
-      // crs: L.CRS.EPSG4326,
       center: [39, 118],
       minZoom: 2,
       maxZoom: 18,
       zoom: 8,
-      layers: baseMapLayer,
+      crs: L.CRS.TianDiTu_WGS84,
+      layers: [baseMapLayer,MapLabel]
     })
     // console.log(map);
     baseMap = {
       '中国底图': baseMapLayer,
+      // '矢量标记': MapLabel
     }
     control = L.control.layers(baseMap).addTo(map)
     L.control

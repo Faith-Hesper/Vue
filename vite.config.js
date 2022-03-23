@@ -61,9 +61,9 @@ export default defineConfig({
     rollupOptions: {
       output: {
         // 静态资源分类打包
-        assetFileNames: "css/[name].[hash].css",
-        chunkFileNames: "js/[name].[hash].js",
-        entryFileNames: "js/[name].[hash].js",
+        assetFileNames: "assets/css/[name].[hash].css",
+        chunkFileNames: "assets/js/[name].[hash].js",
+        entryFileNames: "assets/js/[name].[hash].js",
         // 拆分包  此处手动设置，将项目依赖的第三方包都拆分到独立的js文件，避免vendor包size过大，（不喜欢看到终端的警告）
         manualChunks: {
           // "@supermap/iclient-leaflet": ["@supermap/iclient-leaflet"],
