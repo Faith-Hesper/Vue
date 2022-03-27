@@ -1,5 +1,6 @@
 <template>
   <!-- <el-header> -->
+  <slot name="expand_btn"></slot>
   <div class="search">
     <span class="example-demonstration">搜索: </span>
     <el-cascader
@@ -24,6 +25,7 @@ import { onMounted, ref, reactive, shallowReactive } from 'vue'
 import { province_list, city_list, county_list } from '@/utils/areaListPrimary'
 import { ponit } from '@/utils/map'
 import getCoordsPoint from '@/utils/getCoordsPoint'
+
 // import { earthquake } from '@/api/base'
 
 const searchArea = ref('110000')

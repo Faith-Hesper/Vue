@@ -3,10 +3,10 @@
   <!-- <el-scrollbar> -->
   <!-- <el-radio-group v-model="isCollapse"> -->
   <div class="aside">
-    <el-button type="primary" @click="btn_expand"
+    <!-- <el-button type="primary" @click="btn_expand"
       ><el-icon><component :is="currentIconComponent"></component></el-icon
       >{{ expand_text }}</el-button
-    >
+    > -->
     <!-- <el-radio-button :label="false">展开</el-radio-button> -->
     <!-- <el-radio-button :label="true">缩回</el-radio-button> -->
     <!-- </el-radio-group> -->
@@ -55,32 +55,6 @@
   import { onMounted, ref,inject } from "vue"
   import { recentPonit } from  "@/utils/map"
 
-  // 组件名必须加引号
-  let currentIconComponent = ref("expand");
-  let expand_text = ref("展开");
-  let times = 0;
-  // 默认缩回
-  let isCollapse = ref(true);
-  const handleOpen = (key, keyPath) => {
-    // console.log(key, keyPath)
-  }
-  const handleClose = (key, keyPath) => {
-    // console.log(key, keyPath)
-  }
-  function btn_expand() {
-    if (times == 0) {
-      isCollapse.value = false;
-      currentIconComponent.value = "fold";
-      expand_text.value = "缩回";
-      times++;
-    } else {
-      isCollapse.value = true;
-      currentIconComponent.value = "expand";
-      // console.log('111',isCollapse);
-      expand_text.value = "";
-      times = 0;
-    }
-  }
   const recentquakeData = inject('recentquakeData')
   console.log(recentquakeData);
   const recent = async ()=>{
@@ -89,16 +63,16 @@
 </script>
 <script>
 export default {
-  setup() {},
+    props: {
+    isCollapse: {
+      type: Boolean,
+      default: true
+    }
+  },
 };
 </script>
 
 <style scoped>
-.el-button {
-  width: 65px;
-  justify-content: center;
-  align-items: center;
-}
 .el-aside {
   /* width: 300px; */
   height: 100%;

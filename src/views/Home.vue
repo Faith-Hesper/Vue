@@ -1,25 +1,30 @@
 <template>
   <el-container class="layout-container" style="height: 44.4375rem">
     <el-header>
-    <HeaderContainer></HeaderContainer>
+      <HeaderContainer>
+        <template v-slot:expand_btn>
+          <ExpandBtn @btnClicked="Collapse"></ExpandBtn>
+        </template>
+      </HeaderContainer>
     </el-header>
     <el-container>
       <!-- <el-space :fill="fill" wrap>  -->
-        <AsideContainer></AsideContainer>
+      <AsideContainer :isCollapse="collapseText"></AsideContainer>
       <!-- </el-space> -->
       <el-main>
-      <MapContainer></MapContainer>
+        <MapContainer></MapContainer>
       </el-main>
     </el-container>
   </el-container>
 </template>
 
 <script>
-import { onMounted,provide,shallowRef } from 'vue'
+import { onMounted, provide, ref, shallowRef } from 'vue'
 import HeaderContainer from '@/components/HeaderContainer/HeaderContainer.vue'
 import AsideContainer from '@/components/AsideContainer/AsideContainer.vue'
 import MapContainer from '@/components/MapContainer/MapContainer.vue'
-import { earthPoint,recentData } from '@/utils/map'
+import ExpandBtn from '@/components/HeaderContainer/ExpandBtn.vue'
+import { earthPoint, recentData } from '@/utils/map'
 import { earthquake } from '@/api/base'
 
 export default {
@@ -27,31 +32,38 @@ export default {
   components: {
     HeaderContainer,
     AsideContainer,
-    MapContainer
+    MapContainer,
+    ExpandBtn,
   },
-  setup(props) {
 
-    // let earthquakeData = shallowReactive({
-    //   earthquakePoint: [],
-    //   recentData: {}
-    // })
-    let earthquakePoint = shallowRef([])
-    let recentquakeData = shallowRef({})
+  setup(props) {
+    const earthquakePoint = shallowRef([])
+    const recentquakeData = shallowRef({})
+    const collapseText = ref()
     // provide('earthquakeData',earthquakeData)
-    provide('earthquakePoint',earthquakePoint)
-    provide('recentquakeData',recentquakeData)
-    onMounted(async ()=>{
+    provide('earthquakePoint', earthquakePoint)
+    provide('recentquakeData', recentquakeData)
+    onMounted(async () => {
       // 请求地震点数据
-      const { data:{ result } } = await earthquake()
+      const {
+        data: { result },
+      } = await earthquake()
       let reverseDate = result.reverse()
       earthquakePoint.value = await earthPoint(reverseDate)
-      recentquakeData.value =await recentData(reverseDate)
+      recentquakeData.value = await recentData(reverseDate)
     })
+
+    const Collapse = (iscollapse)=>{
+      collapseText.value = iscollapse
+      // console.log(iscollapse);
+    }
     return {
       earthquakePoint,
-      recentquakeData
+      recentquakeData,
+      Collapse,
+      collapseText
     }
-  }
+  },
 }
 </script>
 
@@ -70,6 +82,4 @@ export default {
   padding: 0;
   border-right: none;
 }
-
-
 </style>
