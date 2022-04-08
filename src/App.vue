@@ -5,7 +5,8 @@ import Home from '@/views/Home.vue'
 </script>
 
 <template>
-  <Home/>
+  <router-view></router-view>
+  <!-- <Home/> -->
 </template>
 
 <style>

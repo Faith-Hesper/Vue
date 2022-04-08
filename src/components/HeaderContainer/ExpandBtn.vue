@@ -11,6 +11,7 @@
 import { ref } from 'vue'
 
 export default {
+  name: 'expandbtn',
   emits: ['btnClicked'],
   setup(props, context) {
     // 组件名必须加引号
@@ -49,7 +50,7 @@ export default {
 
 <style scoped>
 .el-button {
-  width: 56px;
+  /* width: 56px; */
   border-radius: 15%;
   justify-content: center;
   align-items: center;

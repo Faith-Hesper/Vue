@@ -65,16 +65,10 @@ const prop = reactive({
   },
 })
 
+// 搜索避难所
 const searchBtn = async (value) => {
   let points = await getCoordsPoint(1, value)
   await ponit(points)
-}
-
-const formDate = (time)=>{
-  if(time<=9){
-    return '0' + time
-  }
-  return time.toString()
 }
 
 </script>

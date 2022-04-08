@@ -1,5 +1,4 @@
-import L from 'leaflet'
-import { tiandituTileLayer } from '@supermap/iclient-leaflet'
+import { SuperMap, tiandituTileLayer } from '@supermap/iclient-leaflet'
 // { tiandituTileLayer,tiledMapLayer }
 import '@/utils/L.Icon.Pulse'
 import { recentDate } from '@/utils/date'
@@ -11,8 +10,8 @@ let map = {},
   control,
   echartControls,
   baseMap = {}
-  
-  const url = 'http://t0.tianditu.gov.cn/vec_c/wmts?'
+
+const url = 'http://t0.tianditu.gov.cn/vec_c/wmts?'
 
 const myIcon = L.icon({
   iconUrl: 'https://iclient.supermap.io/web/libs/leaflet/1.7.1/images/marker-icon-2x.png',
@@ -25,13 +24,17 @@ async function mapInite() {
     let baseMapLayer = tiandituTileLayer({
       url: url,
       // isLabel: true,
-      key: '70c2475638a45e3fea8696df2f9917f8'
+      key: '70c2475638a45e3fea8696df2f9917f8',
     })
 
     let MapLabel = tiandituTileLayer({
       isLabel: true,
-      key: '70c2475638a45e3fea8696df2f9917f8'
+      key: '70c2475638a45e3fea8696df2f9917f8',
     })
+    // new AMap.Map('map', {
+    //   zoom:11,//级别
+    //   // center: [116.397428, 39.90923],//中心点坐标
+    // })
 
     map = L.map('map', {
       center: [39, 118],
@@ -39,11 +42,11 @@ async function mapInite() {
       maxZoom: 18,
       zoom: 8,
       crs: L.CRS.TianDiTu_WGS84,
-      layers: [baseMapLayer,MapLabel]
+      layers: [baseMapLayer, MapLabel],
     })
     // console.log(map);
     baseMap = {
-      '中国底图': baseMapLayer,
+      中国底图: baseMapLayer,
       // '矢量标记': MapLabel
     }
     control = L.control.layers(baseMap).addTo(map)
@@ -55,7 +58,7 @@ async function mapInite() {
       .addTo(map)
 
     resolve(map)
-  })
+  }).catch((err) => console.log(err))
 }
 
 // 添加避难所标记点
@@ -71,7 +74,7 @@ async function ponit(points) {
     map.flyTo(points[0].location, 13)
     points.forEach((item) => {
       let marker = L.marker(item.location, { icon: myIcon }).bindPopup(
-        `<p>城市: ${item.cityname}</p><p>地区: ${item.adname}</p><p>类型: ${item.name}</p>`
+        `<p>城市: ${item.cityname}</p><p>地区: ${item.adname}</p><p>地址: ${item.address}</p><p>类型: ${item.name}</p>`
       )
       markers.push(marker)
     })
@@ -87,7 +90,36 @@ async function ponit(points) {
     control.addOverlay(markerPoints, '避难所')
 
     resolve(markers)
+  }).catch((err) => console.log(err))
+}
+
+// 等级专题图
+function levelTheme() {
+  // 等级符号专题图
+  const themeGraduatedSymbol = new SuperMap.ThemeGraduatedSymbol({
+    expression: 'CLASS',
+    baseValue: 0,
+    graduatedMode: SuperMap.GraduatedMode.CONSTANT,
+    style: new SuperMap.ThemeGraduatedSymbolStyle({
+      positiveStyle: new SuperMap.ServerStyle({
+        markerSize: 50,
+        markerSymbolID: 0,
+        lineColor: new SuperMap.ServerColor(255, 165, 0),
+        fillBackColor: new SuperMap.ServerColor(255, 0, 0),
+      }),
+    }),
   })
+  const themeParameters = new SuperMap.ThemeParameters({
+    datasetNames: ['earthquakePoint'],
+    dataSourceNames: ['points'],
+    themes: [themeGraduatedSymbol],
+    // displayFilters:
+  })
+  L.supermap
+    .themeService('http://localhost:8090/iserver/services/data-earthquakePoints/rest/data')
+    .getThemeInfo(themeParameters, (serviceResult) => {
+      console.log(serviceResult)
+    })
 }
 
 // 地震点
@@ -97,6 +129,7 @@ async function earthPoint(result) {
     control.removeLayer(earthquakePoint)
   }
   return await new Promise((resolve, reject) => {
+    levelTheme()
     // 导入的L.icon.pulse
     const pulseIcon = L.icon.pulse({
       iconSize: [12, 12],
@@ -114,9 +147,9 @@ async function earthPoint(result) {
           icon: pulseIcon,
         }).bindPopup(
           `<p>城市: ${item.LOCATION_C}</p><p>震级: ${item.M}</p><p>深度: ${item.EPI_DEPTH} 千米</p><p>发震时刻: ${item.O_TIME}</p>`
-          )
-          )
-        })
+        )
+      )
+    })
     earthquakePoint = L.featureGroup(markers)
       .on('mousemove', (e) => e.layer.openPopup())
       .on('click', (e) => e.layer.openPopup())
@@ -124,7 +157,7 @@ async function earthPoint(result) {
       .addTo(map)
     control.addOverlay(earthquakePoint, '地震源')
     resolve(markers)
-  })
+  }).catch((err) => console.log(err))
 }
 
 // echarts 图表
@@ -182,7 +215,7 @@ async function Chart(echartsData) {
     echartControls.addTo(map)
     // console.log(chart);
     resolve(chart)
-  })
+  }).catch((err) => console.log(err))
 }
 
 // 最近几天地震数据
@@ -211,7 +244,7 @@ async function recentData(reverseDate) {
     })
     // console.log(recent_echartsData)
     resolve(recent_echartsData)
-  })
+  }).catch((err) => console.log(err))
   // 渲染echarts图表
   // console.log(recent_echartsData);
   await Chart(recent_echartsData)
@@ -219,20 +252,19 @@ async function recentData(reverseDate) {
 }
 
 async function recentPonit(recentquakeData) {
-  let allData = await new Promise((resolve, inject) => {
+  let allData = await new Promise((resolve, reject) => {
     let allData = []
-    recentquakeData.value.data.map(dayPonints => {
-      dayPonints.map(item => {
+    recentquakeData.value.data.map((dayPonints) => {
+      dayPonints.map((item) => {
         allData.push(item)
       })
-    }) 
+    })
     resolve(allData)
     // console.log(allData)
-  })
+  }).catch((err) => console.log(err))
   echartControls.remove()
   return await earthPoint(allData)
 }
-
 
 export { map, myIcon, ponit, earthPoint, Chart, recentData, recentPonit }
 export default mapInite

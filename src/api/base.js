@@ -3,16 +3,17 @@ import axios from 'axios'
 
 // const agent = new https.Agent({ keepAlive: true,rejectUnauthorized: false })
 
+// 高德地图关键字搜索API
 async function gaode(pageNum,city="唐山市") { 
-    const data = await axios.get(`/gaode/v3/place/text?key=5833fc2ab01735a6c6fd3a72d1b43459&keywords=应急&city=${city}&page=${pageNum}&citylimit=true`)
-    console.log(data)
+    const data = await axios.get(`/gaode/v3/place/text?key=5833fc2ab01735a6c6fd3a72d1b43459&keywords=应急&city=${city}&page=${pageNum}&citylimit=true&extensions=all&children=1`).catch(err=>console.log(err))
+    // console.log(data)
     return data
 }
 
 async function earthquake() { 
     // let timestamp = Date.parse(new Date())
     const data = await axios.get('/api/earth').catch(err => console.log(err))
-    console.log(data);
+    // console.log(data)
     return data
 }
 

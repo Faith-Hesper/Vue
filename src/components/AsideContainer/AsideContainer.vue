@@ -10,12 +10,7 @@
     <!-- <el-radio-button :label="false">展开</el-radio-button> -->
     <!-- <el-radio-button :label="true">缩回</el-radio-button> -->
     <!-- </el-radio-group> -->
-    <el-menu
-      :collapse="isCollapse"
-      @open="handleOpen"
-      @close="handleClose"
-      default-active="1"
-    >
+    <el-menu :collapse="isCollapse" @open="handleOpen" @close="handleClose" default-active="1">
       <el-sub-menu index="1">
         <template #title>
           <el-icon><location /></el-icon>
@@ -52,24 +47,25 @@
 </template>
 
 <script setup>
-  import { onMounted, ref,inject } from "vue"
-  import { recentPonit } from  "@/utils/map"
+import { onMounted, ref, inject } from 'vue'
+import { recentPonit } from '@/utils/map'
 
-  const recentquakeData = inject('recentquakeData')
-  console.log(recentquakeData);
-  const recent = async ()=>{
-    await recentPonit(recentquakeData)
-  }
+const recentquakeData = inject('recentquakeData')
+console.log(recentquakeData)
+const recent = async () => {
+  await recentPonit(recentquakeData)
+}
 </script>
 <script>
 export default {
-    props: {
+  name: 'Aside',
+  props: {
     isCollapse: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
-};
+}
 </script>
 
 <style scoped>

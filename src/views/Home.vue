@@ -53,6 +53,7 @@ export default {
       recentquakeData.value = await recentData(reverseDate)
     })
 
+    // 侧边栏折叠
     const Collapse = (iscollapse)=>{
       collapseText.value = iscollapse
       // console.log(iscollapse);
@@ -69,8 +70,7 @@ export default {
 
 <style scoped>
 .el-header {
-  height: 50px;
-  position: relative;
+  height: 2.7rem;
   padding: 0;
   background-color: #b3c0d1;
   display: flex;
