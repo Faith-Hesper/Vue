@@ -93,7 +93,7 @@ async function ponit(points) {
   }).catch((err) => console.log(err))
 }
 
-// 等级专题图
+// 等级专题图 err
 function levelTheme() {
   // 等级符号专题图
   const themeGraduatedSymbol = new SuperMap.ThemeGraduatedSymbol({
@@ -118,6 +118,7 @@ function levelTheme() {
   L.supermap
     .themeService('http://localhost:8090/iserver/services/data-earthquakePoints/rest/data')
     .getThemeInfo(themeParameters, (serviceResult) => {
+      serviceResult.type === "processFailed" ? console.log(serviceResult.error.errorMsg):true
       console.log(serviceResult)
     })
 }

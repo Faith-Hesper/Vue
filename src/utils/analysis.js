@@ -1,4 +1,14 @@
+/*
+ * @Author: Faith
+ * @Date: 2022-04-02 17:08
+ * @LastAuthor: Faith
+ * @LastEditTime: 2022-04-10 17:35
+ * @Description: 超图分析函数
+ */
+
+
 const dataUrl = 'http://localhost:8090/iserver/services/data-earthquakePoints/rest/data'
+const spatialanalystUrl = 'http://localhost:8090/iserver/services/spatialAnalysis-earthquakePoints/restjsr/spatialanalyst'
 
 // 窗口
 function selectDate(param) {
@@ -67,6 +77,7 @@ async function dateSelect(param) {
 }
 
 // sql查询
+
 async function sqlQuery(url = '', filter = '', group = '') {
   url = url == '' ? dataUrl : url
   filter = filter == '' ? '' : `Date_User> "${filter} 00:00:00"`
@@ -81,6 +92,7 @@ async function sqlQuery(url = '', filter = '', group = '') {
       toIndex: 238,
     })
     L.supermap.featureService(url).getFeaturesBySQL(sqlParam, (serviceResult) => {
+      serviceResult.type === "processFailed" ? alert(serviceResult.error+"\n请打开iServer服务"):true
       console.log(serviceResult.result)
       resolve(serviceResult.result)
     })
@@ -107,10 +119,9 @@ async function buffer_Analysis() {
   // 分析
   return await new Promise((resolve, reject) => {
     L.supermap
-      .spatialAnalystService(
-        'http://localhost:8090/iserver/services/spatialAnalysis-earthquakePoints/restjsr/spatialanalyst'
-      )
+      .spatialAnalystService(spatialanalystUrl)
       .bufferAnalysis(butterflyAnalystParams, (serviceResult) => {
+        serviceResult.type === "processFailed" ? alert(serviceResult.error+"\n请打开iServer服务"):true
         resolve(serviceResult.result)
         // L.geoJSON(serviceResult.result.recordset.features).addTo(map)
         console.log(serviceResult.result)

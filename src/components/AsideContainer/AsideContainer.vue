@@ -1,3 +1,10 @@
+<!--
+ * @Author: Faith
+ * @Date: 2022-03-18 16:52
+ * @LastAuthor: Faith
+ * @LastEditTime: 2022-04-10 18:14
+ * @Description: 
+-->
 <template>
   <!-- <el-aside> -->
   <!-- <el-scrollbar> -->
@@ -14,28 +21,27 @@
       <el-sub-menu index="1">
         <template #title>
           <el-icon><location /></el-icon>
-          <span>Navigator One</span>
+          <span>地震模拟</span>
         </template>
         <el-menu-item-group title="Group One">
           <el-menu-item index="1-1" @click="recent">7天内数据</el-menu-item>
           <el-menu-item index="1-2">item one</el-menu-item>
         </el-menu-item-group>
-        <el-menu-item-group title="Group Two">
-          <el-menu-item index="1-3">item three</el-menu-item>
-        </el-menu-item-group>
-        <el-sub-menu index="1-4">
-          <template #title>item four</template>
-          <el-menu-item index="1-4-1">item one</el-menu-item>
-        </el-sub-menu>
       </el-sub-menu>
       <el-menu-item index="2">
         <el-icon><icon-menu /></el-icon>
-        <span>Navigator Two</span>
+        <span>统计上报</span>
       </el-menu-item>
-      <el-menu-item index="3" disabled>
-        <el-icon><document /></el-icon>
-        <span>Navigator Three</span>
-      </el-menu-item>
+      <el-sub-menu index="3">
+        <template #title>
+          <el-icon><document /></el-icon>
+          <span>历史地震</span>
+        </template>
+        <el-menu-item-group title="地震查询">
+          <el-menu-item index="1-1" @click="rightAsideShow">地震信息</el-menu-item>
+          <el-menu-item index="1-2">item one</el-menu-item>
+        </el-menu-item-group>
+      </el-sub-menu>
       <el-menu-item index="4">
         <el-icon><setting /></el-icon>
         <span>Navigator Four</span>
@@ -50,10 +56,19 @@
 import { onMounted, ref, inject } from 'vue'
 import { recentPonit } from '@/utils/map'
 
+const rAside = ref(false)
 const recentquakeData = inject('recentquakeData')
 console.log(recentquakeData)
+
 const recent = async () => {
   await recentPonit(recentquakeData)
+}
+
+const emit = defineEmits(['rightAside'])
+
+const rightAsideShow = () => {
+  rAside.value = rAside.value == true ? false : true
+  emit('rightAside', rAside.value)
 }
 </script>
 <script>
@@ -81,6 +96,7 @@ export default {
   background-color: rgb(238, 241, 246);
 }
 .aside {
+  height: 100%;
   flex-direction: column;
   background-color: rgb(238, 241, 246);
 }
