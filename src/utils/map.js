@@ -19,7 +19,7 @@ const myIcon = L.icon({
 })
 
 // 初始化地图
-async function mapInite() {
+async function mapInite(id) {
   return await new Promise((resolve, reject) => {
     let baseMapLayer = tiandituTileLayer({
       url: url,
@@ -36,7 +36,7 @@ async function mapInite() {
     //   // center: [116.397428, 39.90923],//中心点坐标
     // })
 
-    map = L.map('map', {
+    map = L.map(id, {
       center: [39, 118],
       minZoom: 2,
       maxZoom: 18,

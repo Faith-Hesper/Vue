@@ -1,14 +1,26 @@
 <template>
-  <div id="map" style="position: relative; width: 100%; height: 100%"></div>
-  <!-- </el-main> -->
+  <div :id="mapId" style="position: relative; 100%; height: 100%"></div>
 </template>
 
-<script setup></script>
-
-<script>
+<script setup>
 import { onMounted, ref } from 'vue'
 import mapInite, { map } from '@/utils/map'
 import sqlQuery, { buffer_Analysis } from '@/utils/analysis'
+
+const props = defineProps({
+  mapId: {
+    type: String,
+    default: 'map'
+  },
+})
+
+const data = onMounted(async () => {
+  console.log(props.mapId);
+  await mapInite(props.mapId)
+})
+</script>
+
+<script>
 // import getCoordsPoint from '../../utils/getCoordsPoint'
 /*
 1应急知识：
@@ -33,37 +45,39 @@ import sqlQuery, { buffer_Analysis } from '@/utils/analysis'
 */
 export default {
   name: 'Map',
-  setup() {
-    const fill = ref(true)
+  // props: {
+  //   mapId: 'map'
+  // },
+  // setup() {
 
-    const getGeoData = () => {
-      let k = 0
-      for (let i = 0; i <= 5; i++) {}
-    }
-    const data = onMounted(async () => {
-      await mapInite()
+  // const getGeoData = () => {
+  //   let k = 0
+  //   for (let i = 0; i <= 5; i++) {}
+  // }
+  // const data = onMounted(async () => {
+  //   await mapInite()
 
-      // const sqlResult = await sqlQuery()
-      // let resultLayer = L.geoJSON(sqlResult.features, {
-      //   onEachFeature: (feature, layer) => {
-      //     // console.log(feature, layer)
-      //     layer.bindPopup(feature.properties.LOCATION)
-      //   },
-      // }).addTo(map)
+  // const sqlResult = await sqlQuery()
+  // let resultLayer = L.geoJSON(sqlResult.features, {
+  //   onEachFeature: (feature, layer) => {
+  //     // console.log(feature, layer)
+  //     layer.bindPopup(feature.properties.LOCATION)
+  //   },
+  // }).addTo(map)
 
-      const bufferResult = await buffer_Analysis()
-      L.geoJSON(bufferResult.recordset.features).addTo(map)
-    })
+  // 缓冲区分析
+  // const bufferResult = await buffer_Analysis()
+  // L.geoJSON(bufferResult.recordset.features).addTo(map)
+  // })
 
-    // 烈度
-    const intensity = () => {}
+  // 烈度
+  // const intensity = () => {}
 
-    return {
-      data,
-      // getGeoData,
-      fill,
-    }
-  },
+  // return {
+  //   data,
+  // getGeoData,
+  // }
+  // },
 }
 </script>
 

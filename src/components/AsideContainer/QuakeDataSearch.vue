@@ -1,92 +1,93 @@
 <template>
-  <el-container>
-    <el-header>历史查询</el-header>
-    <el-main>
-      <el-form :model="form" label-position="left">
-        <el-form-item label="时间">
-          <el-date-picker v-model="form.date" type="daterange" format="YYYY-MM-DD" value-format="YYYY-MM-DD" @blur="time"></el-date-picker>
-        </el-form-item>
-        <el-form-item label="纬度" inline="true">
-          <el-row justify="space-between">
-            <el-col :span="3">
-              <span>大于</span>
-            </el-col>
-            <el-col :span="4">
-              <el-input v-model="form.lat_gt"></el-input>
-            </el-col>
-            <el-col :span="3">
-              <span>小于</span>
-            </el-col>
-            <el-col :span="4">
-              <el-input v-model="form.lat_lt"></el-input>
-            </el-col>
-            <el-col :span="10">
-              <span style="color: #999999; font-size: 0.6rem">单位：度 范围:-90至90</span>
-            </el-col>
-          </el-row>
-        </el-form-item>
-        <el-form-item label="经度" inline="true">
-          <el-row justify="space-between">
-            <el-col :span="3">
-              <span>大于</span>
-            </el-col>
-            <el-col :span="4">
-              <el-input v-model="form.lng_gt"></el-input>
-            </el-col>
-            <el-col :span="3">
-              <span>小于</span>
-            </el-col>
-            <el-col :span="4">
-              <el-input  v-model="form.lng_lt"></el-input>
-            </el-col>
-            <el-col :span="10">
-              <span style="color: #999999; font-size: 0.6rem">单位：度 范围:-180至180</span>
-            </el-col>
-          </el-row>
-        </el-form-item>
-        <el-form-item label="深度">
-          <el-row justify="space-between">
-            <el-col :span="3">
-              <span>大于</span>
-            </el-col>
-            <el-col :span="6">
-              <el-input v-model="form.depth_gt"></el-input>
-            </el-col>
-            <el-col :span="3">
-              <span>小于</span>
-            </el-col>
-            <el-col :span="6">
-              <el-input v-model="form.depth_lt"></el-input>
-            </el-col>
-            <el-col :span="5">
-              <span style="color: #999999; font-size: 0.6rem">单位：千米</span>
-            </el-col>
-          </el-row>
-        </el-form-item>
-        <el-form-item label="震级">
-          <el-row justify="space-between">
-            <el-col :span="3">
-              <span>大于</span>
-            </el-col>
-            <el-col :span="6">
-              <el-input v-model="form.class_gt"></el-input>
-            </el-col>
-            <el-col :span="3">
-              <span>小于</span>
-            </el-col>
-            <el-col :span="6">
-              <el-input v-model="form.class_lt"></el-input>
-            </el-col>
-            <el-col :span="5">
-              <span style="color: #999999; font-size: 0.6rem">单位：级</span>
-            </el-col>
-          </el-row>
-        </el-form-item>
-        <el-button type="primary" @click="searchBtn">查询</el-button>
-        <el-button type="primary" @click="footerHide">{{ btnStatus }}</el-button>
-      </el-form>
-    </el-main>
-  </el-container>
+  <el-form :model="form" label-position="left">
+    <el-form-item label="时间">
+      <el-date-picker
+        v-model="form.date"
+        type="daterange"
+        format="YYYY-MM-DD"
+        value-format="YYYY-MM-DD"
+        @blur="time"
+      ></el-date-picker>
+    </el-form-item>
+    <el-form-item label="纬度" inline="true">
+      <el-row justify="space-between">
+        <el-col :span="3">
+          <span>大于</span>
+        </el-col>
+        <el-col :span="4">
+          <el-input v-model="form.lat_gt"></el-input>
+        </el-col>
+        <el-col :span="3">
+          <span>小于</span>
+        </el-col>
+        <el-col :span="4">
+          <el-input v-model="form.lat_lt"></el-input>
+        </el-col>
+        <el-col :span="10">
+          <span style="color: #999999; font-size: 0.6rem">单位：度 范围:-90至90</span>
+        </el-col>
+      </el-row>
+    </el-form-item>
+    <el-form-item label="经度" inline="true">
+      <el-row justify="space-between">
+        <el-col :span="3">
+          <span>大于</span>
+        </el-col>
+        <el-col :span="4">
+          <el-input v-model="form.lng_gt"></el-input>
+        </el-col>
+        <el-col :span="3">
+          <span>小于</span>
+        </el-col>
+        <el-col :span="4">
+          <el-input v-model="form.lng_lt"></el-input>
+        </el-col>
+        <el-col :span="10">
+          <span style="color: #999999; font-size: 0.6rem">单位：度 范围:-180至180</span>
+        </el-col>
+      </el-row>
+    </el-form-item>
+    <el-form-item label="深度">
+      <el-row justify="space-between">
+        <el-col :span="3">
+          <span>大于</span>
+        </el-col>
+        <el-col :span="6">
+          <el-input v-model="form.depth_gt"></el-input>
+        </el-col>
+        <el-col :span="3">
+          <span>小于</span>
+        </el-col>
+        <el-col :span="6">
+          <el-input v-model="form.depth_lt"></el-input>
+        </el-col>
+        <el-col :span="5">
+          <span style="color: #999999; font-size: 0.6rem">单位：千米</span>
+        </el-col>
+      </el-row>
+    </el-form-item>
+    <el-form-item label="震级">
+      <el-row justify="space-between">
+        <el-col :span="3">
+          <span>大于</span>
+        </el-col>
+        <el-col :span="6">
+          <el-input v-model="form.class_gt"></el-input>
+        </el-col>
+        <el-col :span="3">
+          <span>小于</span>
+        </el-col>
+        <el-col :span="6">
+          <el-input v-model="form.class_lt"></el-input>
+        </el-col>
+        <el-col :span="5">
+          <span style="color: #999999; font-size: 0.6rem">单位：级</span>
+        </el-col>
+      </el-row>
+    </el-form-item>
+    <el-button type="primary" @click="searchBtn">查询</el-button>
+    <el-button type="primary" @click="footerHide">{{ btnStatus }}</el-button>
+  </el-form>
 </template>
 
 <script setup>
@@ -106,33 +107,35 @@ const form = reactive({
   class_lt: '',
 })
 
-const emit = defineEmits(['footer','search'])
-const time = ()=>{
-  console.log(form.date);
+const emit = defineEmits(['footer', 'search'])
+const time = () => {
+  console.log(form.date)
 }
 
-const searchBtn = async()=>{
-  const {features:{features:sqlResult}} = await sqlQuery('',form.date[0])
-  let sqlData = sqlResult.map(item=>{
+const searchBtn = async () => {
+  const {
+    features: { features: sqlResult },
+  } = await sqlQuery('', form.date[0])
+  let sqlData = sqlResult.map((item) => {
     let temp = {
       class: item.properties.CLASS,
-      date:item.properties.QUAKEDATE,
-      lat:item.properties.LAT,
-      lng:item.properties.LNG,
-      depth:item.properties.DEPTH,
-      location:item.properties.LOCATION
+      date: item.properties.QUAKEDATE,
+      lat: item.properties.LAT,
+      lng: item.properties.LNG,
+      depth: item.properties.DEPTH,
+      location: item.properties.LOCATION,
     }
-    return temp  
+    return temp
   })
-  emit('search',sqlData)
-  console.log(sqlData);
+  emit('search', sqlData)
+  console.log(sqlData)
 }
 
 // 控制页脚显示与隐藏
-const footerHide = ()=>{
-  status.value = status.value == true ? false : true
+const footerHide = () => {
+  status.value = !status.value
   btnStatus.value = status.value == true ? '隐藏' : '显示'
-  emit('footer',status.value)
+  emit('footer', status.value)
 }
 </script>
 

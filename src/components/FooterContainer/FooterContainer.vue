@@ -1,9 +1,9 @@
 <template>
-  <el-row>
-    <el-col :span="20" :offset="2">
+  <!-- <el-row> -->
+    <!-- <el-col :span="20" :offset="2"> -->
       <!-- <el-card class="box-card"> -->
-      <div class="quaketable">
-        <el-table :data="quakeData" stripe height="250">
+      <!-- <div class="quaketable"> -->
+        <el-table :data="quakeData" stripe border  max-height="550">
           <el-table-column prop="class" label="震级"></el-table-column>
           <el-table-column prop="date" label="发震时刻"></el-table-column>
           <el-table-column prop="lat" label="纬度"></el-table-column>
@@ -11,10 +11,10 @@
           <el-table-column prop="depth" label="深度"></el-table-column>
           <el-table-column prop="location" label="位置"></el-table-column>
         </el-table>
-      </div>
+      <!-- </div> -->
       <!-- </el-card> -->
-    </el-col>
-  </el-row>
+    <!-- </el-col> -->
+  <!-- </el-row> -->
 </template>
 
 <script setup>

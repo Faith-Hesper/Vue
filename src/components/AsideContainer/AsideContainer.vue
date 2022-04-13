@@ -1,37 +1,42 @@
-<!--
- * @Author: Faith
- * @Date: 2022-03-18 16:52
- * @LastAuthor: Faith
- * @LastEditTime: 2022-04-10 18:14
- * @Description: 
--->
 <template>
-  <!-- <el-aside> -->
-  <!-- <el-scrollbar> -->
-  <!-- <el-radio-group v-model="isCollapse"> -->
-  <div class="aside">
-    <!-- <el-button type="primary" @click="btn_expand"
-      ><el-icon><component :is="currentIconComponent"></component></el-icon
-      >{{ expand_text }}</el-button
-    > -->
-    <!-- <el-radio-button :label="false">展开</el-radio-button> -->
-    <!-- <el-radio-button :label="true">缩回</el-radio-button> -->
-    <!-- </el-radio-group> -->
-    <el-menu :collapse="isCollapse" @open="handleOpen" @close="handleClose" default-active="1">
-      <el-sub-menu index="1">
+  <el-menu
+    class="el-menu-vertical-demo"
+    :collapse="isCollapse"
+    active-text-color="#ffd04b"
+    background-color="#545c64"
+    text-color="#fff"
+    @open="handleOpen"
+    @close="handleClose"
+    default-active="/"
+    router
+  >
+    <h3>管理后台</h3>
+    <el-menu-item v-for="item in noChildren" :index="item.path" :key="item.path">
+      <el-icon><component :is="item.icon"></component></el-icon>
+      <span>{{ item.label }}</span>
+    </el-menu-item>
+    <el-sub-menu v-for="item in hasChildren" :index="item.path" :key="item.path">
+      <template #title>
+        <el-icon><component :is="item.icon"></component></el-icon>
+        <span>{{ item.label }}</span>
+      </template>
+      <el-menu-item-group
+        v-for="(subitem, subindex) in item.children"
+        :index="item.path"
+        :key="item.path"
+      >
+        <el-menu-item :index="subitem.path" route>{{ subitem.label }}</el-menu-item>
+      </el-menu-item-group>
+    </el-sub-menu>
+    <!-- <el-sub-menu index="1">
         <template #title>
           <el-icon><location /></el-icon>
           <span>地震模拟</span>
         </template>
         <el-menu-item-group title="Group One">
           <el-menu-item index="1-1" @click="recent">7天内数据</el-menu-item>
-          <el-menu-item index="1-2">item one</el-menu-item>
         </el-menu-item-group>
       </el-sub-menu>
-      <el-menu-item index="2">
-        <el-icon><icon-menu /></el-icon>
-        <span>统计上报</span>
-      </el-menu-item>
       <el-sub-menu index="3">
         <template #title>
           <el-icon><document /></el-icon>
@@ -39,23 +44,67 @@
         </template>
         <el-menu-item-group title="地震查询">
           <el-menu-item index="1-1" @click="rightAsideShow">地震信息</el-menu-item>
-          <el-menu-item index="1-2">item one</el-menu-item>
         </el-menu-item-group>
-      </el-sub-menu>
-      <el-menu-item index="4">
-        <el-icon><setting /></el-icon>
-        <span>Navigator Four</span>
-      </el-menu-item>
-    </el-menu>
-  </div>
-  <!-- </el-scrollbar> -->
+      </el-sub-menu> -->
+  </el-menu>
   <!-- </el-aside> -->
 </template>
 
 <script setup>
-import { onMounted, ref, inject } from 'vue'
+import { onMounted, ref, inject, computed } from 'vue'
 import { recentPonit } from '@/utils/map'
 
+const menu = [
+  {
+    path: '/',
+    name: 'home',
+    label: '首页',
+    icon: 'house',
+    url: '',
+  },
+  {
+    path: '/simulation',
+    label: '地震模拟',
+    icon: 'location',
+    children: [
+      {
+        path: '/recent',
+        name: '',
+        label: '7天内数据',
+        icon: 'location',
+        url: '',
+      },
+    ],
+  },
+  {
+    path: '/statistic',
+    name: '',
+    label: '统计上报',
+    icon: 'icon-menu',
+    url: '',
+  },
+  {
+    path: '/history',
+    label: '历史地震',
+    icon: 'document',
+    children: [
+      {
+        path: '/quakeInformation',
+        name: '',
+        label: '地震信息',
+        icon: 'location',
+        url: '',
+      },
+    ],
+  },
+  {
+    path: '/themetic',
+    name: '',
+    label: '专题图',
+    icon: 'setting',
+    url: '',
+  },
+]
 const rAside = ref(false)
 const recentquakeData = inject('recentquakeData')
 console.log(recentquakeData)
@@ -66,11 +115,24 @@ const recent = async () => {
 
 const emit = defineEmits(['rightAside'])
 
-const rightAsideShow = () => {
-  rAside.value = rAside.value == true ? false : true
-  emit('rightAside', rAside.value)
+const noChildren = computed(() => {
+  return menu.filter((item) => !item.children)
+})
+const hasChildren = computed(() => {
+  return menu.filter((item) => item.children)
+})
+const handleOpen = (key, keyPath) => {
+  console.log(key, keyPath)
 }
+const handleClose = (key, keyPath) => {
+  console.log(key, keyPath)
+}
+// const rightAsideShow = () => {
+//   rAside.value = !rAside.value
+//   emit('rightAside', rAside.value)
+// }
 </script>
+
 <script>
 export default {
   name: 'Aside',
@@ -80,24 +142,26 @@ export default {
       default: true,
     },
   },
+  computed: {
+    isCollapse(){
+      return this.$store.state.isCollapse
+    }
+  }
 }
 </script>
 
-<style scoped>
-.el-aside {
-  /* width: 300px; */
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  background-color: rgb(238, 241, 246);
+<style lang="less" scoped>
+h3 {
+  color: #fff;
+  font-size: 15px;
 }
-.el-menu {
-  left: 0;
-  background-color: rgb(238, 241, 246);
-}
-.aside {
-  height: 100%;
-  flex-direction: column;
-  background-color: rgb(238, 241, 246);
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 200px;
+  min-height: 400px;
+  h3 {
+    color: #fff;
+    text-align: center;
+    line-height: 48px;
+  }
 }
 </style>

@@ -1,8 +1,7 @@
 <template>
-  <el-button type="primary" @click="btn_expand" 
+  <el-button type="primary" @click="btn_expand"
     ><el-icon :size="20"><component :is="currentIconComponent"></component></el-icon
-    ></el-button
-  >
+  ></el-button>
 </template>
 
 <script setup></script>
@@ -21,29 +20,17 @@ export default {
     const isCollapse = ref(true)
     const times = ref(0)
 
-    function btn_expand() {
-      if (times.value == 0) {
-        isCollapse.value = false
-        context.emit('btnClicked',isCollapse.value)
-        currentIconComponent.value = 'fold'
-        // expand_text.value = '缩回'
-        times.value = 1
-      } else {
-        isCollapse.value = true
-        context.emit('btnClicked',isCollapse.value)
-        currentIconComponent.value = 'expand'
-        // expand_text.value = ''
-        times.value = 0
-      }
-    }
-    // console.log()
     return {
       currentIconComponent,
-      // expand_text,
       isCollapse,
-      btn_expand,
-      times
+      times,
     }
+  },
+  methods: {
+    btn_expand() {
+      this.$store.commit('collapseStatus')
+      this.currentIconComponent = this.currentIconComponent == 'fold' ? 'expand' : 'fold'
+    },
   },
 }
 </script>

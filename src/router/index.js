@@ -1,29 +1,33 @@
-import { createRouter,createWebHashHistory } from 'vue-router'
-import App from '@/App.vue'
-import HeatMap from '@/views/HeatMap'
+import { createRouter,createWebHistory } from 'vue-router'
 import Home from '@/views/Home'
 
 const routes = [
   {
     path: '/',
-    name: 'App',
-    redirect: '/home',
-    component: App
-  },
-  {
-    path: '/home',
     name: 'Home',
-    component: Home
-  },
-  {
-    path: '/heatmap',
-    name: 'heatMap',
-    component: HeatMap
+    component: Home,
+    children: [
+      {
+        path: '/statistic',
+        name: 'map',
+        component: ()=>import ('@/components/MapContainer/MapContainer')
+      },
+      {
+        path: '/quakeInformation',
+        name: 'quakeInformation',
+        component: ()=>import ('@/views/EarthquakeInformation/EarthquakeInformation.vue')
+      },
+      {
+        path: '/themetic',
+        name: 'themetic',
+        component: ()=>import ('@/views/HeatMap')
+      }
+    ]
   }
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes
 })
 
