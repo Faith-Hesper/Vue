@@ -1,6 +1,6 @@
 <template>
   <!-- <el-header> -->
-  <slot name="expand_btn"></slot>
+  <ExpandBtn></ExpandBtn>
   <div class="search">
     <span class="example-demonstration">搜索: </span>
     <el-cascader
@@ -22,6 +22,7 @@
 
 <script setup>
 import { onMounted, ref, reactive, shallowReactive } from 'vue'
+import ExpandBtn from '@/components/HeaderContainer/ExpandBtn.vue'
 import { province_list, city_list, county_list } from '@/utils/areaListPrimary'
 import { ponit } from '@/utils/map'
 import getCoordsPoint from '@/utils/getCoordsPoint'

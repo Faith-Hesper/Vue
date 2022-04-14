@@ -4,9 +4,6 @@
     <el-container>
       <el-header>
         <HeaderContainer>
-          <template v-slot:expand_btn>
-            <ExpandBtn></ExpandBtn>
-          </template>
         </HeaderContainer>
       </el-header>
       <el-main>
@@ -22,7 +19,6 @@ import { onMounted, provide, ref, shallowRef, reactive } from 'vue'
 import HeaderContainer from '@/components/HeaderContainer/HeaderContainer.vue'
 import AsideContainer from '@/components/AsideContainer/AsideContainer.vue'
 // import MapContainer from '@/components/MapContainer/MapContainer.vue'
-import ExpandBtn from '@/components/HeaderContainer/ExpandBtn.vue'
 import { earthPoint, recentData } from '@/utils/map'
 import { earthquake } from '@/api/base'
 
@@ -33,7 +29,6 @@ export default {
     HeaderContainer,
     AsideContainer,
     // MapContainer,
-    ExpandBtn,
   },
 
   setup(props) {
@@ -42,19 +37,19 @@ export default {
 
     provide('earthquakePoint', earthquakePoint)
     provide('recentquakeData', recentquakeData)
-    onMounted(async () => {
-      // 请求地震点数据
-      const {
-        data: { result },
-      } = await earthquake()
-      let reverseDate = result.reverse()
-      earthquakePoint.value = await earthPoint(reverseDate)
-      recentquakeData.value = await recentData(reverseDate)
-    })
+    // onMounted(async () => {
+    //   // 请求地震点数据
+    //   const {
+    //     data: { result },
+    //   } = await earthquake()
+    //   let reverseDate = result.reverse()
+    //   earthquakePoint.value = await earthPoint(reverseDate)
+    //   recentquakeData.value = await recentData(reverseDate)
+    // })
 
     return {
-      earthquakePoint,
-      recentquakeData
+      // earthquakePoint,
+      // recentquakeData
     }
   },
 }

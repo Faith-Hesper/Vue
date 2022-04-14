@@ -1,34 +1,26 @@
 <template>
-  <!-- <el-row> -->
-    <!-- <el-col :span="20" :offset="2"> -->
-      <!-- <el-card class="box-card"> -->
-      <!-- <div class="quaketable"> -->
-        <el-table :data="quakeData" stripe border  max-height="550">
-          <el-table-column prop="class" label="震级"></el-table-column>
-          <el-table-column prop="date" label="发震时刻"></el-table-column>
-          <el-table-column prop="lat" label="纬度"></el-table-column>
-          <el-table-column prop="lng" label="经度"></el-table-column>
-          <el-table-column prop="depth" label="深度"></el-table-column>
-          <el-table-column prop="location" label="位置"></el-table-column>
-        </el-table>
-      <!-- </div> -->
-      <!-- </el-card> -->
-    <!-- </el-col> -->
-  <!-- </el-row> -->
+  <el-table :data="quakeData" stripe border max-height="550">
+    <el-table-column prop="class" label="震级"></el-table-column>
+    <el-table-column prop="date" label="发震时刻"></el-table-column>
+    <el-table-column prop="lat" label="纬度"></el-table-column>
+    <el-table-column prop="lng" label="经度"></el-table-column>
+    <el-table-column prop="depth" label="深度"></el-table-column>
+    <el-table-column prop="location" label="位置"></el-table-column>
+  </el-table>
 </template>
 
 <script setup>
 import sqlQuery from '@/utils/analysis'
-import { onMounted, onUpdated, reactive,ref } from 'vue'
+import { onMounted, onUpdated, reactive, ref } from 'vue'
 const quakeData = ref([])
 const props = defineProps({
-  quakeInformation: []
+  quakeInformation: [],
 })
 
-onUpdated( ()=>{
+onUpdated(() => {
   quakeData.value = props.quakeInformation
-  console.log(props.quakeInformation);
-  console.log(quakeData.value);
+  // console.log(props.quakeInformation)
+  // console.log(quakeData.value)
   // const {features:{features:sqlResult}} = await sqlQuery('',props.quakeInformation.date[0])
   // // sqlResult.map(item=>{
   // //   item.properties
@@ -38,6 +30,7 @@ onUpdated( ()=>{
   // quakeData = quakeInformation
 })
 </script>
+
 <script>
 export default {}
 </script>

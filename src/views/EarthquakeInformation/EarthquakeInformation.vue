@@ -8,31 +8,33 @@
           </el-header>
           <el-main>
             <QuakeDataSearch @footer="footerStatusChange" @search="search"></QuakeDataSearch>
-            <MapContainer mapId="quakeMap" style="max-width:1000px; height:500px"></MapContainer>
+            <MapContainer mapId="quakeMap" :sqlResultLayer="sqlResultFeatures" style="max-width:1000px; height:500px"></MapContainer>
           </el-main>
         </el-container>
       </el-card>
-      <template v-if="footerStatus">
+      <!-- <template v-if="footerStatus">
         <el-card shadow="hover" style="margin: 10px 0">
-          <!-- <el-footer> -->
+
           <FooterContainer :quakeInformation="formData"></FooterContainer>
-          <!-- </el-footer> -->
+
         </el-card>
-      </template>
+      </template> -->
     </el-col>
   </el-row>
 </template>
 
 <script setup>
+import { reactive, ref } from 'vue'
 import BreadCrumb from '@/components/Common/BreadCrumb'
-import QuakeDataSearch from '@/components/AsideContainer/QuakeDataSearch'
+import QuakeDataSearch from '@/components/Common/QuakeDataSearch'
 import MapContainer from '@/components/MapContainer/MapContainer'
 import FooterContainer from '@/components/FooterContainer/FooterContainer.vue'
-import { ref } from 'vue'
+import sqlQuery from '@/utils/analysis'
+
 const asideShow = ref()
-const footerStatus = ref(false)
+const footerStatus = ref(true)
 const formData = ref({})
-const rAside = ref(false)
+const sqlResultFeatures = ref({})
 
 // 地震信息查询窗口状态
 const aside = (status) => {
@@ -44,8 +46,26 @@ const footerStatusChange = (status) => {
   footerStatus.value = status
 }
 
-const search = (data) => {
-  formData.value = data
+const search = async(data) => {
+  // const {
+  //   features: { features: sqlResult },
+  // } = await sqlQuery('', data.date[0])
+  const { features } = await sqlQuery('', data.date[0])
+  sqlResultFeatures.value = features
+  console.log(sqlResultFeatures.value)
+  const { features: sqlResult } = features
+  let sqlData = sqlResult.map((item) => {
+    let temp = {
+      class: item.properties.CLASS,
+      date: item.properties.QUAKEDATE,
+      lat: item.properties.LAT,
+      lng: item.properties.LNG,
+      depth: item.properties.DEPTH,
+      location: item.properties.LOCATION,
+    }
+    return temp
+  })
+  formData.value = sqlData
   console.log(formData)
 }
 </script>

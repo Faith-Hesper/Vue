@@ -1,22 +1,41 @@
 <template>
-  <div :id="mapId" style="position: relative; 100%; height: 100%"></div>
+  <div :id="mapId" style="position: relative; width:100%; height: 100%"></div>
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
-import mapInite, { map } from '@/utils/map'
+import { computed, onMounted, onUpdated, ref, shallowReactive, nextTick } from 'vue'
+import mapObject, { mapControl } from '@/utils/map'
 import sqlQuery, { buffer_Analysis } from '@/utils/analysis'
 
+// const maps = shallowReactive({
+//   map: {}
+// })
 const props = defineProps({
   mapId: {
     type: String,
     default: 'map'
   },
+  sqlResultLayer: {}
 })
 
-const data = onMounted(async () => {
-  console.log(props.mapId);
-  await mapInite(props.mapId)
+onMounted(async () => {
+  // console.log(props.mapId);
+  // map(props.mapId)
+  nextTick(async()=>{
+
+    let map = await mapObject(props.mapId)
+    await mapControl(map)
+
+  })
+  // await mapControl(map)
+  // mapControl(map)
+})
+
+onUpdated(()=>{
+  // L.geoJSON(props.sqlResultLayer).addTo(maps.map)
+})
+computed(()=>{
+  console.log(props.sqlResultLayer);
 })
 </script>
 

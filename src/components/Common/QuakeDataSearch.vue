@@ -1,5 +1,5 @@
 <template>
-  <el-form :model="form" label-position="left">
+  <el-form :model="form" label-position="left" label-width="auto">
     <el-form-item label="时间">
       <el-date-picker
         v-model="form.date"
@@ -91,7 +91,6 @@
 </template>
 
 <script setup>
-import sqlQuery from '@/utils/analysis'
 import { reactive, ref } from 'vue'
 const btnStatus = ref('显示')
 const status = ref(false)
@@ -113,22 +112,7 @@ const time = () => {
 }
 
 const searchBtn = async () => {
-  const {
-    features: { features: sqlResult },
-  } = await sqlQuery('', form.date[0])
-  let sqlData = sqlResult.map((item) => {
-    let temp = {
-      class: item.properties.CLASS,
-      date: item.properties.QUAKEDATE,
-      lat: item.properties.LAT,
-      lng: item.properties.LNG,
-      depth: item.properties.DEPTH,
-      location: item.properties.LOCATION,
-    }
-    return temp
-  })
-  emit('search', sqlData)
-  console.log(sqlData)
+  emit('search', form)
 }
 
 // 控制页脚显示与隐藏

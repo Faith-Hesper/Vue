@@ -36,18 +36,8 @@
         <el-menu-item-group title="Group One">
           <el-menu-item index="1-1" @click="recent">7天内数据</el-menu-item>
         </el-menu-item-group>
-      </el-sub-menu>
-      <el-sub-menu index="3">
-        <template #title>
-          <el-icon><document /></el-icon>
-          <span>历史地震</span>
-        </template>
-        <el-menu-item-group title="地震查询">
-          <el-menu-item index="1-1" @click="rightAsideShow">地震信息</el-menu-item>
-        </el-menu-item-group>
       </el-sub-menu> -->
   </el-menu>
-  <!-- </el-aside> -->
 </template>
 
 <script setup>
@@ -105,7 +95,7 @@ const menu = [
     url: '',
   },
 ]
-const rAside = ref(false)
+
 const recentquakeData = inject('recentquakeData')
 console.log(recentquakeData)
 
@@ -113,38 +103,31 @@ const recent = async () => {
   await recentPonit(recentquakeData)
 }
 
-const emit = defineEmits(['rightAside'])
-
+// 筛选出无子菜单的菜单集合
 const noChildren = computed(() => {
   return menu.filter((item) => !item.children)
 })
+
+// 筛选出有子菜单的菜单集合
 const hasChildren = computed(() => {
   return menu.filter((item) => item.children)
 })
+
 const handleOpen = (key, keyPath) => {
   console.log(key, keyPath)
 }
 const handleClose = (key, keyPath) => {
   console.log(key, keyPath)
 }
-// const rightAsideShow = () => {
-//   rAside.value = !rAside.value
-//   emit('rightAside', rAside.value)
-// }
+
 </script>
 
 <script>
 export default {
   name: 'Aside',
-  props: {
-    isCollapse: {
-      type: Boolean,
-      default: true,
-    },
-  },
   computed: {
     isCollapse(){
-      return this.$store.state.isCollapse
+      return this.$store.state.collapseStatus
     }
   }
 }

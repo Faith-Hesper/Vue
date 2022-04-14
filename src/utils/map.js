@@ -4,7 +4,7 @@ import '@/utils/L.Icon.Pulse'
 import { recentDate } from '@/utils/date'
 import echarts from 'echarts'
 
-let map = {},
+let 
   markerPoints = {},
   earthquakePoint = {},
   control,
@@ -18,46 +18,50 @@ const myIcon = L.icon({
   iconSize: [25, 35],
 })
 
-// 初始化地图
-async function mapInite(id) {
+// 初始化地图对象
+async function mapObject(id) {
   return await new Promise((resolve, reject) => {
-    let baseMapLayer = tiandituTileLayer({
-      url: url,
-      // isLabel: true,
-      key: '70c2475638a45e3fea8696df2f9917f8',
-    })
-
-    let MapLabel = tiandituTileLayer({
-      isLabel: true,
-      key: '70c2475638a45e3fea8696df2f9917f8',
-    })
-    // new AMap.Map('map', {
-    //   zoom:11,//级别
-    //   // center: [116.397428, 39.90923],//中心点坐标
-    // })
-
-    map = L.map(id, {
+    const map = L.map(id, {
       center: [39, 118],
       minZoom: 2,
       maxZoom: 18,
       zoom: 8,
       crs: L.CRS.TianDiTu_WGS84,
-      layers: [baseMapLayer, MapLabel],
     })
+
+    resolve(map)
+  }).catch((err) => console.log(err))
+}
+
+async function mapControl(map) {
+  return await new Promise((resolve, reject) => {
+    // 这两个底图变量必须定义在函数内部，否则不显示地图
+    const baseMapLayer = L.supermap.tiandituTileLayer({
+      url: url,
+      // isLabel: true,
+      key: '70c2475638a45e3fea8696df2f9917f8',
+    })
+    
+    const MapLabel = L.supermap.tiandituTileLayer({
+      isLabel: true,
+      key: '70c2475638a45e3fea8696df2f9917f8',
+    })
+    map.addLayer(baseMapLayer)
+    map.addLayer(MapLabel)
     // console.log(map);
     baseMap = {
       中国底图: baseMapLayer,
       // '矢量标记': MapLabel
     }
     control = L.control.layers(baseMap).addTo(map)
+    console.log(control);
     L.control
       .scale({
         imperial: false,
         maxWidth: 200,
       })
       .addTo(map)
-
-    resolve(map)
+    resolve(control)
   }).catch((err) => console.log(err))
 }
 
@@ -118,7 +122,7 @@ function levelTheme() {
   L.supermap
     .themeService('http://localhost:8090/iserver/services/data-earthquakePoints/rest/data')
     .getThemeInfo(themeParameters, (serviceResult) => {
-      serviceResult.type === "processFailed" ? console.log(serviceResult.error.errorMsg):true
+      serviceResult.type === 'processFailed' ? console.log(serviceResult.error.errorMsg) : true
       console.log(serviceResult)
     })
 }
@@ -267,5 +271,5 @@ async function recentPonit(recentquakeData) {
   return await earthPoint(allData)
 }
 
-export { map, myIcon, ponit, earthPoint, Chart, recentData, recentPonit }
-export default mapInite
+export {  myIcon, ponit, mapControl,earthPoint, Chart, recentData, recentPonit }
+export default mapObject

@@ -1,10 +1,11 @@
 import echarts from 'echarts'
 import 'echarts/map/js/china'
 import 'echarts/extension/bmap/bmap'
-import sqlQuery, { selectDate, dataSource, dateSelect } from '@/utils/analysis'
+import sqlQuery from '@/utils/analysis'
 import { SuperMap, tiandituTileLayer } from '@supermap/iclient-leaflet'
 
 let map = {}
+const china = 'http://localhost:8090/iserver/services/map-china400/rest/maps/ChinaDark'
 const data = [
   { name: '海门', value: 9 },
   { name: '鄂尔多斯', value: 12 },
@@ -233,26 +234,20 @@ const option = {
 }
 
 async function init(id) {
-  map = L.map(id, {
-    center: [39, 118],
-    minZoom: 2,
-    maxZoom: 18,
-    zoom: 8,
-    // crs: L.CRS.TianDiTu_WGS84,
-    // layers: [baseMapLayer,MapLabel]
+  new Promise((resolve, reject) => {
+    map = L.map(id, {
+      center: [39, 118],
+      minZoom: 2,
+      maxZoom: 18,
+      zoom: 8,
+      // crs: L.CRS.TianDiTu_WGS84,
+      // layers: [baseMapLayer,MapLabel]
+    })
+    L.supermap
+      .tiledMapLayer(china)
+      .addTo(map)
+    L.supermap.echartsLayer(option).addTo(map)
   })
-  L.supermap
-    .tiledMapLayer('http://localhost:8090/iserver/services/map-china400/rest/maps/ChinaDark')
-    .addTo(map)
-  // var chartDom = document.getElementById(id)
-  // var myChart = echarts.init(chartDom)
-  // const result = await sqlQuery()
-  // console.log(result);
-  // option && myChart.setOption(option)
-  dataSource()
-  dateSelect()
-  L.supermap.echartsLayer(option).addTo(map)
-  // console.log(option)
 }
 
 export { map }

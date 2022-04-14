@@ -11,24 +11,20 @@ import { ref } from 'vue'
 
 export default {
   name: 'expandbtn',
-  emits: ['btnClicked'],
   setup(props, context) {
     // 组件名必须加引号
     const currentIconComponent = ref('expand')
     // 默认缩回
     // const expand_text = ref('展开')
-    const isCollapse = ref(true)
-    const times = ref(0)
+
 
     return {
       currentIconComponent,
-      isCollapse,
-      times,
     }
   },
   methods: {
     btn_expand() {
-      this.$store.commit('collapseStatus')
+      this.$store.commit('collapseStatusChange')
       this.currentIconComponent = this.currentIconComponent == 'fold' ? 'expand' : 'fold'
     },
   },

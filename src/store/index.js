@@ -3,12 +3,12 @@ import { createStore } from 'vuex'
 const store = createStore({
   state () {
     return {
-      isCollapse: true,
+      collapseStatus: true,
     }
   },
   mutations: {
-    collapseStatus (state) {
-      state.isCollapse = !state.isCollapse
+    collapseStatusChange (state) {
+      state.collapseStatus = !state.collapseStatus
     }
   }
 })

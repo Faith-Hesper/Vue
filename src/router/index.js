@@ -10,7 +10,7 @@ const routes = [
       {
         path: '/statistic',
         name: 'map',
-        component: ()=>import ('@/components/MapContainer/MapContainer')
+        component: ()=>import ('@/components/MapContainer/MapContainer.vue')
       },
       {
         path: '/quakeInformation',
