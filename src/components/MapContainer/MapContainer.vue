@@ -15,20 +15,17 @@ const props = defineProps({
     type: String,
     default: 'map'
   },
-  sqlResultLayer: {}
+  sqlResultLayer: {
+    type: Object,
+    default: {}
+  }
 })
 
 onMounted(async () => {
-  // console.log(props.mapId);
-  // map(props.mapId)
   nextTick(async()=>{
-
     let map = await mapObject(props.mapId)
     await mapControl(map)
-
   })
-  // await mapControl(map)
-  // mapControl(map)
 })
 
 onUpdated(()=>{

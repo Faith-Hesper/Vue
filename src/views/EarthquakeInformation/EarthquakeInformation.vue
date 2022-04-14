@@ -12,13 +12,11 @@
           </el-main>
         </el-container>
       </el-card>
-      <!-- <template v-if="footerStatus">
+      <template v-if="footerStatus">
         <el-card shadow="hover" style="margin: 10px 0">
-
           <FooterContainer :quakeInformation="formData"></FooterContainer>
-
         </el-card>
-      </template> -->
+      </template>
     </el-col>
   </el-row>
 </template>
@@ -47,9 +45,6 @@ const footerStatusChange = (status) => {
 }
 
 const search = async(data) => {
-  // const {
-  //   features: { features: sqlResult },
-  // } = await sqlQuery('', data.date[0])
   const { features } = await sqlQuery('', data.date[0])
   sqlResultFeatures.value = features
   console.log(sqlResultFeatures.value)

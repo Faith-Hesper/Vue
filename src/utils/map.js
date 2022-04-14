@@ -54,7 +54,6 @@ async function mapControl(map) {
       // '矢量标记': MapLabel
     }
     control = L.control.layers(baseMap).addTo(map)
-    console.log(control);
     L.control
       .scale({
         imperial: false,
