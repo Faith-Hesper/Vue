@@ -14,7 +14,7 @@
       </el-card>
       <template v-if="footerStatus">
         <el-card shadow="hover" style="margin: 10px 0">
-          <FooterContainer :quakeInformation="formData"></FooterContainer>
+          <FooterContainer :quakeInformation="sqlQueryResult"></FooterContainer>
         </el-card>
       </template>
     </el-col>
@@ -22,7 +22,7 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
+import { onBeforeMount, reactive, ref } from 'vue'
 import BreadCrumb from '@/components/Common/BreadCrumb'
 import QuakeDataSearch from '@/components/Common/QuakeDataSearch'
 import MapContainer from '@/components/MapContainer/MapContainer'
@@ -31,7 +31,8 @@ import sqlQuery from '@/utils/analysis'
 
 const asideShow = ref()
 const footerStatus = ref(true)
-const formData = ref({})
+const fields = ref([])
+const sqlQueryResult = ref({})
 const sqlResultFeatures = ref({})
 
 // 地震信息查询窗口状态
@@ -44,8 +45,10 @@ const footerStatusChange = (status) => {
   footerStatus.value = status
 }
 
-const search = async(data) => {
-  const { features } = await sqlQuery('', data.date[0])
+// let sqlParameters = 
+const search = async(sqlFilter) => {
+  const { features } = await sqlQuery('', sqlFilter)
+  console.log(features);
   sqlResultFeatures.value = features
   console.log(sqlResultFeatures.value)
   const { features: sqlResult } = features
@@ -60,8 +63,8 @@ const search = async(data) => {
     }
     return temp
   })
-  formData.value = sqlData
-  console.log(formData)
+  sqlQueryResult.value = sqlData
+  console.log(sqlQueryResult)
 }
 </script>
 

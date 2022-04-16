@@ -11,9 +11,9 @@ This template should help get you started developing with Vue 3 in Vite. The tem
 
 ## api
 
-EPI_LAT 纬度
-EPI_LON 经度
-EPI_DEPTH 深度 千米
-M 震级
-LOCATION_C 参考位置
-O_TIME 发震时刻
+- EPI_LAT 纬度
+- EPI_LON 经度
+- EPI_DEPTH 深度 千米
+- M 震级
+- LOCATION_C 参考位置
+- O_TIME 发震时刻

@@ -6,7 +6,6 @@
         type="daterange"
         format="YYYY-MM-DD"
         value-format="YYYY-MM-DD"
-        @blur="time"
       ></el-date-picker>
     </el-form-item>
     <el-form-item label="纬度" inline="true">
@@ -91,15 +90,17 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
+import { getFieldsName } from '@/utils/analysis'
+import { reactive, ref,onBeforeMount } from 'vue'
 const btnStatus = ref('显示')
 const status = ref(false)
+const fields = ref([])
 const form = reactive({
   date: [],
-  lat_gt: '',
-  lat_lt: '',
   lng_gt: '',
   lng_lt: '',
+  lat_gt: '',
+  lat_lt: '',
   depth_gt: '',
   depth_lt: '',
   class_gt: '',
@@ -107,12 +108,52 @@ const form = reactive({
 })
 
 const emit = defineEmits(['footer', 'search'])
-const time = () => {
-  console.log(form.date)
+
+onBeforeMount(async()=>{
+  // 获取字段名集合
+  fields.value = await getFieldsName()
+  // console.log(fields);
+})
+
+// 格式化SQL查询参数
+const sqlFilterParams = ()=>{
+  let temp =""
+  if(form.date[0]!==undefined){
+    temp += `${fields.value[3]} >= "${form.date[0]}  00:00:00" and `
+  }
+  if(form.date[1]!==undefined){
+    temp += `${fields.value[3]} < "${form.date[1]}  00:00:00" and `
+  }
+  if(form.lng_gt!==""){
+    temp += `${fields.value[5]} >= "${form.lng_gt}" and `
+  }
+  if(form.lng_lt!==""){
+      temp += `${fields.value[5]} < "${form.lng_lt}" and `
+    }
+  if(form.lat_gt!==""){
+    temp += `${fields.value[6]} >= "${form.lat_gt}" and `
+  }
+  if(form.lat_lt!==""){
+      temp += `${fields.value[6]} < "${form.lat_lt}" and `
+    }
+  if(form.depth_gt!==""){
+    temp += `${fields.value[7]} >= "${form.depth_gt}" and `
+  }
+  if(form.depth_lt!==""){
+      temp += `${fields.value[7]} < "${form.depth_lt}" and `
+    }
+  if(form.class_gt!==""){
+    temp += `${fields.value[9]} >= "${form.class_gt}" and `
+  }
+  if(form.class_lt!==""){
+      temp += `${fields.value[9]} < "${form.class_lt}" and `
+    }
+  return temp = temp.slice(0,-5)
 }
 
 const searchBtn = async () => {
-  emit('search', form)
+  // sqlFilterParams
+  emit('search', sqlFilterParams())
 }
 
 // 控制页脚显示与隐藏

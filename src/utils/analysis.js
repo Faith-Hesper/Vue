@@ -2,7 +2,7 @@
  * @Author: Faith
  * @Date: 2022-04-02 17:08
  * @LastAuthor: Faith
- * @LastEditTime: 2022-04-13 11:02
+ * @LastEditTime: 2022-04-16 21:17
  * @Description: 超图分析函数
  */
 
@@ -44,7 +44,7 @@ async function dateSelect(param) {
 // sql查询
 async function sqlQuery(url = '', filter = '', group = '') {
   url = url == '' ? dataUrl : url
-  filter = filter == '' ? '' : `Date_User> "${filter} 00:00:00"`
+  // filter = filter == '' ? '' : `Date_User> "${filter} 00:00:00"`
   return await new Promise((resolve, reject) => {
     const sqlParam = new SuperMap.GetFeaturesBySQLParameters({
       queryParameter: {
@@ -57,8 +57,22 @@ async function sqlQuery(url = '', filter = '', group = '') {
     })
     L.supermap.featureService(url).getFeaturesBySQL(sqlParam, (serviceResult) => {
       serviceResult.type === "processFailed" ? alert(serviceResult.error+"\n请打开iServer服务"):true
-      console.log(serviceResult.result)
+      console.log(serviceResult)
       resolve(serviceResult.result)
+    })
+  }).catch((err) => console.log(err))
+}
+
+// 查询字段信息
+async function getFieldsName(url = '') {
+  url = url == '' ? dataUrl : url
+  return await new Promise((resolve, reject) => {
+    const fieldsParam = new SuperMap.FieldParameters({
+      datasource: 'points',
+      dataset: 'earthquakePoint'
+    })
+    L.supermap.fieldService(url).getFields(fieldsParam, (serviceResult) => {
+      resolve(serviceResult.result.fieldNames)
     })
   }).catch((err) => console.log(err))
 }
@@ -93,5 +107,5 @@ async function buffer_Analysis() {
   }).catch((err) => console.log(err))
 }
 
-export { getDatasourcesName, getDatasetsName, dateSelect, buffer_Analysis }
+export { getDatasourcesName, getDatasetsName, getFieldsName, dateSelect, buffer_Analysis }
 export default sqlQuery
