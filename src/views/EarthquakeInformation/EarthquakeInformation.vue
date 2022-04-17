@@ -31,8 +31,7 @@ import sqlQuery from '@/utils/analysis'
 
 const asideShow = ref()
 const footerStatus = ref(true)
-const fields = ref([])
-const sqlQueryResult = ref({})
+const sqlQueryResult = ref([])
 const sqlResultFeatures = ref({})
 
 // 地震信息查询窗口状态
@@ -45,7 +44,7 @@ const footerStatusChange = (status) => {
   footerStatus.value = status
 }
 
-// let sqlParameters = 
+// 获取SQL查询到的数据并传给子组件
 const search = async(sqlFilter) => {
   const { features } = await sqlQuery('', sqlFilter)
   console.log(features);
