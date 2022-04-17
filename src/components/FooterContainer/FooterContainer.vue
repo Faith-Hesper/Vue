@@ -1,5 +1,5 @@
 <template>
-  <el-table :data="quakeData" stripe border max-height="660">
+  <el-table :data="quakeData" stripe border max-height="660" >
     <el-table-column prop="class" label="震级"></el-table-column>
     <el-table-column prop="date" label="发震时刻"></el-table-column>
     <el-table-column prop="lat" label="纬度"></el-table-column>
@@ -30,10 +30,15 @@ const props = defineProps({
 
 const refData = toRef(props,'quakeInformation') 
 
+const mouseHover = (event)=>{
+  console.log(event);
+}
+
 // 表格数据分页
 const handleCurrentChange = (currentPage)=>{
   // console.log(currentPage);
-  quakeData.value = refData.value.slice((currentPage-1)*10,currentPage*10)
+  quakeData.value = refData.value !==[]?refData.value.slice((currentPage-1)*10,currentPage*10):[]
+  
 }
 
 onBeforeMount(()=>{

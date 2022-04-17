@@ -3,13 +3,14 @@
 </template>
 
 <script setup>
-import { computed, onMounted, onUpdated, ref, shallowReactive, nextTick } from 'vue'
+import { computed, onMounted, onUpdated, ref, shallowReactive, nextTick, toRef, watch } from 'vue'
 import mapObject, { mapControl } from '@/utils/map'
 import sqlQuery, { buffer_Analysis } from '@/utils/analysis'
 
-// const maps = shallowReactive({
-//   map: {}
-// })
+const maps = shallowReactive({
+  map: {},
+  control: {},
+})
 const props = defineProps({
   mapId: {
     type: String,
@@ -21,10 +22,35 @@ const props = defineProps({
   }
 })
 
+let sqlLayer= {}
+
+const refResultLayer = toRef(props,"sqlResultLayer")
+
+watch(refResultLayer,(newSqlResultLayer,oldSqlResultLayer)=>{
+  try {
+    maps.map.removeLayer(sqlLayer)
+    maps.control.removeLayer(sqlLayer)
+  } catch (error) {
+    
+  }
+
+  maps.map.flyTo(L.latLng(newSqlResultLayer.features[0].properties.LAT,newSqlResultLayer.features[0].properties.LNG),8)
+  sqlLayer = L.geoJSON(newSqlResultLayer,{
+    pointToLayer: (geoJsonPoint, latlng)=>{
+      return L.marker(latlng).bindPopup(`<p>城市: ${geoJsonPoint.properties.LOCATION}</p><p>震级: ${geoJsonPoint.properties.CLASS}</p><p>深度: ${geoJsonPoint.properties.DEPTH} 千米</p><p>发震时刻: ${geoJsonPoint.properties.QUAKEDATE}</p`)
+    }
+  })
+  sqlLayer.on('mousemove', (e) => e.layer.openPopup())
+      .on('mouseout', (e) =>e.layer.closePopup())
+      .addTo(maps.map)
+    
+  maps.control.addOverlay(sqlLayer,"地震点")
+})
+
 onMounted(async () => {
   nextTick(async()=>{
-    let map = await mapObject(props.mapId)
-    await mapControl(map)
+    maps.map = await mapObject(props.mapId)
+    maps.control = await mapControl(maps.map)
   })
 })
 
