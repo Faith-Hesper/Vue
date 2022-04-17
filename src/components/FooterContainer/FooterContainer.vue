@@ -5,7 +5,11 @@
     <el-table-column prop="lat" label="纬度"></el-table-column>
     <el-table-column prop="lng" label="经度"></el-table-column>
     <el-table-column prop="depth" label="深度"></el-table-column>
-    <el-table-column prop="location" label="位置"></el-table-column>
+    <el-table-column label="位置">
+      <template #default="scope">
+        <span style="color:blue" class="location_cell" @click="flyToLocation(scope.$index, scope.row)">{{  scope.row.location }}</span>
+      </template>
+    </el-table-column>
   </el-table>
   <el-pagination
     :page-size="10"
@@ -16,7 +20,10 @@
 </template>
 
 <script setup>
-import { isRef, onBeforeMount, onMounted, reactive, ref, toRef, watch } from 'vue'
+import { computed, reactive, ref, toRef, watch } from 'vue'
+import { useStore } from 'vuex'
+const store = useStore()
+
 const quakeData = ref([])
 const pageParams= reactive({
   totalPage: 50
@@ -27,7 +34,7 @@ const props = defineProps({
     default: []
   },
 })
-
+// const map11 = ref({})
 const refData = toRef(props,'quakeInformation') 
 
 const mouseHover = (event)=>{
@@ -41,13 +48,17 @@ const handleCurrentChange = (currentPage)=>{
   
 }
 
-onBeforeMount(()=>{
-  console.log(isRef(props.quakeInformation));
-  // pageParams.totalPage = 50
-})
-onMounted(()=>{
-  // console.log('object');
-})
+const flyToLocation = (index,row)=>{
+  let map = store.state.map
+  map.flyTo(L.latLng(row.lat,row.lng),8)
+  // console.log(index,row);
+}
+
+// map11.value = computed(()=> {
+//   console.log(store.state.map);
+//   return store.state.map
+// })
+
 
 // 监听从父组件传入的数据是否发生变化并渲染表格
 watch(refData,(now,old)=>{
@@ -75,5 +86,8 @@ export default {}
 }
 .el-pagination {
   justify-content: center
+}
+.location_cell:hover {
+  background-color: red;
 }
 </style>

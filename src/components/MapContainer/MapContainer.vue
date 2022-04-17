@@ -4,9 +4,10 @@
 
 <script setup>
 import { computed, onMounted, onUpdated, ref, shallowReactive, nextTick, toRef, watch } from 'vue'
+import { useStore } from 'vuex'
 import mapObject, { mapControl } from '@/utils/map'
 import sqlQuery, { buffer_Analysis } from '@/utils/analysis'
-
+const store = useStore()
 const maps = shallowReactive({
   map: {},
   control: {},
@@ -45,6 +46,7 @@ watch(refResultLayer,(newSqlResultLayer,oldSqlResultLayer)=>{
       .addTo(maps.map)
     
   maps.control.addOverlay(sqlLayer,"地震点")
+  store.commit("mapChange",maps.map)
 })
 
 onMounted(async () => {
