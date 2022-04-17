@@ -38,7 +38,7 @@ watch(refResultLayer,(newSqlResultLayer,oldSqlResultLayer)=>{
   maps.map.flyTo(L.latLng(newSqlResultLayer.features[0].properties.LAT,newSqlResultLayer.features[0].properties.LNG),8)
   sqlLayer = L.geoJSON(newSqlResultLayer,{
     pointToLayer: (geoJsonPoint, latlng)=>{
-      return L.marker(latlng).bindPopup(`<p>城市: ${geoJsonPoint.properties.LOCATION}</p><p>震级: ${geoJsonPoint.properties.CLASS}</p><p>深度: ${geoJsonPoint.properties.DEPTH} 千米</p><p>发震时刻: ${geoJsonPoint.properties.QUAKEDATE}</p`)
+      return L.marker(latlng).bindPopup(`<p>震源: ${geoJsonPoint.properties.LOCATION}</p><p>震级: ${geoJsonPoint.properties.CLASS}</p><p>深度: ${geoJsonPoint.properties.DEPTH} 千米</p><p>发震时刻: ${geoJsonPoint.properties.QUAKEDATE}</p`)
     }
   })
   sqlLayer.on('mousemove', (e) => e.layer.openPopup())

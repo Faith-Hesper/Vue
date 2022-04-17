@@ -71,7 +71,7 @@ const search = async(sqlFilter) => {
 export default {}
 </script>
 
-<style>
+<style scoped>
 .breadcrumb {
   padding: 20px 0;
   margin: 0 auto;
