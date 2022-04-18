@@ -18,6 +18,15 @@ const myIcon = L.icon({
   iconSize: [25, 35],
 })
 
+const pulsingIcon = (size=12,color="F60",fillColor="FAA90E",animate=true) => {
+  return L.icon.pulse({
+    iconSize: [size, size],
+    color: color,
+    fillColor: fillColor, // 填充色
+    animate: animate
+  })
+}
+
 // 初始化地图对象
 async function mapObject(id) {
   return await new Promise((resolve, reject) => {
@@ -135,11 +144,8 @@ async function earthPoint(result) {
   return await new Promise((resolve, reject) => {
     levelTheme()
     // 导入的L.icon.pulse
-    const pulseIcon = L.icon.pulse({
-      iconSize: [12, 12],
-      color: '#F60',
-      fillColor: '#FAA90E', // 填充色
-    })
+    
+
     let markers = []
     // console.log(result)
     result.map((item, index) => {
@@ -148,7 +154,7 @@ async function earthPoint(result) {
       }
       markers.push(
         L.marker([item.EPI_LAT, item.EPI_LON], {
-          icon: pulseIcon,
+          icon: pulsingIcon(),
         }).bindPopup(
           `<p>城市: ${item.LOCATION_C}</p><p>震级: ${item.M}</p><p>深度: ${item.EPI_DEPTH} 千米</p><p>发震时刻: ${item.O_TIME}</p>`
         )
@@ -270,5 +276,5 @@ async function recentPonit(recentquakeData) {
   return await earthPoint(allData)
 }
 
-export {  myIcon, ponit, mapControl,earthPoint, Chart, recentData, recentPonit }
+export { myIcon, pulsingIcon, ponit, mapControl, earthPoint, Chart, recentData, recentPonit }
 export default mapObject
