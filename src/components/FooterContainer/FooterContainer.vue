@@ -38,7 +38,7 @@ const props = defineProps({
 const refData = toRef(props,'quakeInformation') 
 
 const tableRowClassName=({row,rowIndex})=>{
-  console.log(row,rowIndex);
+  // console.log(row,rowIndex);
   if (rowIndex%2 === 0) {
     if(row.class>=6) {
     return 'evenlg-row'
