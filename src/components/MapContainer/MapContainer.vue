@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, onUpdated, ref, shallowReactive, nextTick, toRef, watch } from 'vue'
+import { onMounted, ref, shallowReactive, nextTick, toRef, watch } from 'vue'
 import { useStore } from 'vuex'
 import mapObject, { mapControl, pulsingIcon } from '@/utils/map'
 import sqlQuery, { buffer_Analysis } from '@/utils/analysis'
@@ -34,18 +34,17 @@ watch(refResultLayer,(newSqlResultLayer,oldSqlResultLayer)=>{
   } catch (error) {
     
   }
-  // console.log(yellowPulsingIcon);
+
   maps.map.flyTo(L.latLng(newSqlResultLayer.features[0].properties.LAT,newSqlResultLayer.features[0].properties.LNG),8)
   sqlLayer = L.geoJSON(newSqlResultLayer,{
     pointToLayer: (geoJsonPoint, latlng)=>{
       if(geoJsonPoint.properties.CLASS>=6){
-
         return L.marker(latlng,{
           icon: pulsingIcon(geoJsonPoint.properties.CLASS*2.5,'#F60','#ff0000')
         }).bindPopup(`<p>震源: ${geoJsonPoint.properties.LOCATION}</p><p>震级: ${geoJsonPoint.properties.CLASS}</p><p>深度: ${geoJsonPoint.properties.DEPTH} 千米</p><p>发震时刻: ${geoJsonPoint.properties.QUAKEDATE}</p`)
       }
       return L.marker(latlng,{
-          icon: pulsingIcon(geoJsonPoint.properties.CLASS*2.5,"F60","#efcc00",false)
+          icon: pulsingIcon(geoJsonPoint.properties.CLASS*2.5,"#F60","#efcc00",false)
         }).bindPopup(`<p>震源: ${geoJsonPoint.properties.LOCATION}</p><p>震级: ${geoJsonPoint.properties.CLASS}</p><p>深度: ${geoJsonPoint.properties.DEPTH} 千米</p><p>发震时刻: ${geoJsonPoint.properties.QUAKEDATE}</p`)
     }
   })
@@ -64,12 +63,6 @@ onMounted(async () => {
   })
 })
 
-onUpdated(()=>{
-  // L.geoJSON(props.sqlResultLayer).addTo(maps.map)
-})
-computed(()=>{
-  console.log(props.sqlResultLayer);
-})
 </script>
 
 <script>

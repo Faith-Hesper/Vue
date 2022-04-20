@@ -26,7 +26,7 @@ const store = useStore()
 
 const quakeData = ref([])
 const pageParams= reactive({
-  totalPage: 50
+  totalPage: 10
 })
 const props = defineProps({
   quakeInformation: {

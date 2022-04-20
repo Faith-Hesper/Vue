@@ -1,6 +1,7 @@
 <template>
   <div id="toolbar">
     <el-card>
+      <div>缓冲区</div>
       <el-form :model="form" label-position="left" label-width="auto">
         <el-form-item label="数据源">
           <el-select v-model="form.datasourceName">

@@ -1,7 +1,16 @@
 # Vue 3 + Vite
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## 使用方法
 
+1. server 文件夹作后端
+2. vue3-demo 为前端
+3. 后端使用
+   1. npm install
+   2. cd server
+   3. npm run dev
+4. 前端使用
+   1. npm install
+   2. npm run dev
 ## Element plus
 
 - <el-menu>菜单</el-menu>
