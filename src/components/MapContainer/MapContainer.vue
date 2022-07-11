@@ -1,5 +1,9 @@
 <template>
-  <div :id="mapId" style="position: relative; width:100%; height: 100%"></div>
+  <!-- <a name="btn">11</a> -->
+  <!-- <div style="position: relative">111</div> -->
+  <!-- <el-card></el-card> -->
+  <div :id="mapId" style="position:relative; width:100%; height: 100%"></div>
+  <!-- <div style="position:relative; top:-200px; left:100px; width:50px; z-index:500;">111</div> -->
 </template>
 
 <script setup>
@@ -50,6 +54,8 @@ watch(refResultLayer,(newSqlResultLayer,oldSqlResultLayer)=>{
   })
   sqlLayer.on('mousemove', (e) => e.layer.openPopup())
       .on('mouseout', (e) =>e.layer.closePopup())
+      .on('click', (e) =>
+        maps.map.flyTo(e.latlng,8))
       .addTo(maps.map)
     
   maps.control.addOverlay(sqlLayer,"地震点")

@@ -1,3 +1,10 @@
+/*
+ * @Author: Faith
+ * @Date: 2022-03-18 08:32
+ * @LastAuthor: Please set LastEditors
+ * @LastEditTime: 2022-05-15 16:29
+ * @Description: 
+ */
 import axios from 'axios'
 // import https from'https'
 
@@ -17,4 +24,14 @@ async function earthquake() {
     return data
 }
 
-export { gaode, earthquake }
+async function sqlData(date) {
+    const { data } = await axios.get('/api/info', {
+        'params': {
+            date: date
+        }
+    }).catch(err => console.log(err))
+    // console.log(data);
+    return data
+}
+
+export { gaode, earthquake, sqlData }

@@ -7,7 +7,7 @@
     text-color="#fff"
     @open="handleOpen"
     @close="handleClose"
-    default-active="/quakeInformation"
+    default-active="/home"
     router
   >
     <h3>管理后台</h3>
@@ -46,7 +46,7 @@ import { recentPonit } from '@/utils/map'
 
 const menu = [
   {
-    path: '/',
+    path: '/home',
     name: 'home',
     label: '首页',
     icon: 'house',

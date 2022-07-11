@@ -1,15 +1,23 @@
 <template>
   <el-row>
     <el-col :span="20" :offset="2">
-      <el-card shadow="hover" :body-style="{ padding: '0px 20px' }">
+      <el-card shadow="hover" :body-style="{ padding: '0px 10px' }">
         <el-container>
           <el-header height="30px">
             <BreadCrumb></BreadCrumb>
           </el-header>
+          <el-container>
           <el-main>
+            <!-- <el-card :body-style="{ padding: '0px 0px' }"> -->
             <QuakeDataSearch @footer="footerStatusChange" @search="search"></QuakeDataSearch>
-            <MapContainer mapId="quakeMap" :sqlResultLayer="sqlResultFeatures" style="max-width:1000px; height:500px"></MapContainer>
+            <!-- </el-card> -->
+            <el-card :body-style="{ padding: '0px 0px' }">
+            <MapContainer mapId="quakeMap" :sqlResultLayer="sqlResultFeatures" style="max-width:1000px; height:500px">
+            </MapContainer>
+            </el-card>
           </el-main>
+          <el-aside width="200px" style="background-color: #545c64">aside</el-aside>
+          </el-container>
         </el-container>
       </el-card>
       <template v-if="footerStatus">

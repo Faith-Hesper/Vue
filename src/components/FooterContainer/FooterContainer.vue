@@ -1,6 +1,6 @@
 <template>
-  <el-table :data="quakeData" :row-class-name="tableRowClassName" stripe border max-height="660" >
-    <el-table-column prop="class" label="震级(M)"></el-table-column>
+  <el-table :data="quakeData" :row-class-name="tableRowClassName" stripe border max-height="670" >
+    <el-table-column prop="class" sortable  label="震级(M)"></el-table-column>
     <el-table-column prop="date" label="发震时刻"></el-table-column>
     <el-table-column prop="lat" label="纬度(°)"></el-table-column>
     <el-table-column prop="lng" label="经度(°)"></el-table-column>
@@ -12,8 +12,10 @@
     </el-table-column>
   </el-table>
   <el-pagination
-    :page-size="10"
-    layout="prev, pager, next"
+    background 
+    :hide-on-single-page="pageParams.status"
+    :page-size="pageParams.pageSize"
+    :layout="pageParams.layout"
     :total="pageParams.totalPage"
     @current-change="handleCurrentChange"
   />
@@ -26,7 +28,10 @@ const store = useStore()
 
 const quakeData = ref([])
 const pageParams= reactive({
-  totalPage: 10
+  status: true,
+  pageSize: 10,
+  layout: "prev, pager, next, jumper",
+  totalPage: 1
 })
 const props = defineProps({
   quakeInformation: {
@@ -65,8 +70,13 @@ const handleCurrentChange = (currentPage)=>{
 const flyToLocation = (index,row)=>{
   let map = store.state.map
   map.flyTo(L.latLng(row.lat,row.lng),8)
-  window.scrollBy(0,-500)
+  // document.getElementById('quakeMap').scrollTop = 560
   // console.log(index,row);
+}
+
+const sort = (a,b)=>{
+  console.log(a,b);
+  return a-b
 }
 
 // map11.value = computed(()=> {
@@ -77,6 +87,7 @@ const flyToLocation = (index,row)=>{
 
 // 监听从父组件传入的数据是否发生变化并渲染表格
 watch(refData,(now,old)=>{
+  pageParams.status = false
   pageParams.totalPage = now.length
   quakeData.value = now.slice(0,10)
   console.log(quakeData.value);
